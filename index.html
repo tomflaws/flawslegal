@@ -8,7 +8,6 @@
 * { margin: 0; padding: 0; box-sizing: border-box; }
 body { font-family: Georgia, 'Times New Roman', serif; color: #1a1a1a; background: #fff; font-size: 16px; line-height: 1.7; }
 
-/* NAV */
 nav { background: #0d0d0d; position: sticky; top: 0; z-index: 100; border-bottom: 2px solid #7a1a1a; }
 .nav-inner { max-width: 1100px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; padding: 0 1.5rem; }
 .nav-logo { cursor: pointer; padding: 0.6rem 0; flex-shrink: 0; }
@@ -21,19 +20,8 @@ nav { background: #0d0d0d; position: sticky; top: 0; z-index: 100; border-bottom
 .page { display: none; }
 .page.active { display: block; }
 
-/* HERO — split layout: dark text left, photo right */
-.hero {
-  background: #0d0d0d;
-  color: #fff;
-  display: flex;
-  min-height: 580px;
-}
-.hero-left {
-  flex: 0 0 52%;
-  display: flex;
-  align-items: center;
-  padding: 4rem 3rem 4rem 4rem;
-}
+.hero { background: #0d0d0d; color: #fff; display: flex; min-height: 580px; }
+.hero-left { flex: 0 0 52%; display: flex; align-items: center; padding: 4rem 3rem 4rem 4rem; }
 .hero-text { max-width: 480px; }
 .hero-eyebrow { font-family: Arial, sans-serif; font-size: 11px; text-transform: uppercase; letter-spacing: 3px; color: #c0392b; margin-bottom: 1.2rem; }
 .hero-rule { width: 40px; height: 3px; background: #7a1a1a; margin-bottom: 1.5rem; }
@@ -42,28 +30,9 @@ nav { background: #0d0d0d; position: sticky; top: 0; z-index: 100; border-bottom
 .hero .tagline { font-size: 1rem; color: #aaa; font-family: Arial, sans-serif; font-style: italic; margin-bottom: 0.4rem; }
 .hero .affil { font-family: Arial, sans-serif; font-size: 0.78rem; color: #666; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 2.5rem; }
 .hero-btns { display: flex; gap: 1rem; flex-wrap: wrap; }
-
-.hero-right {
-  flex: 0 0 48%;
-  position: relative;
-  overflow: hidden;
-}
-.hero-right img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: 40% top;
-  display: block;
-}
-/* subtle left-edge fade so photo blends into dark background */
-.hero-right::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; bottom: 0;
-  width: 80px;
-  background: linear-gradient(to right, #0d0d0d, transparent);
-  z-index: 1;
-}
+.hero-right { flex: 0 0 48%; position: relative; overflow: hidden; }
+.hero-right img { width: 100%; height: 100%; object-fit: cover; object-position: 40% top; display: block; }
+.hero-right::before { content: ''; position: absolute; top: 0; left: 0; bottom: 0; width: 80px; background: linear-gradient(to right, #0d0d0d, transparent); z-index: 1; }
 
 .btn-primary { background: #7a1a1a; color: #fff; border: none; padding: 0.9rem 2rem; font-size: 0.95rem; cursor: pointer; font-family: Arial, sans-serif; letter-spacing: 0.5px; transition: background 0.2s; }
 .btn-primary:hover { background: #a32d2d; }
@@ -88,14 +57,13 @@ section { padding: 4rem 2rem; }
 .pa-card h3 { font-size: 1.1rem; font-family: Arial, sans-serif; margin-bottom: 0.5rem; }
 .pa-card p { font-size: 0.9rem; color: #555; font-family: Arial, sans-serif; line-height: 1.5; }
 
-.results-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem; }
+.results-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; }
 .result-card { background: #0d0d0d; color: #fff; padding: 2rem; text-align: center; border-top: 3px solid #7a1a1a; }
-.result-amount { font-size: 2rem; color: #c0392b; font-weight: bold; display: block; margin-bottom: 0.3rem; }
-.result-type { font-family: Arial, sans-serif; font-size: 0.8rem; color: #999; text-transform: uppercase; letter-spacing: 1.5px; display: block; margin-bottom: 0.5rem; }
-.result-desc { font-family: Arial, sans-serif; font-size: 0.88rem; color: #bbb; }
+.result-amount { font-size: 1.8rem; color: #c0392b; font-weight: bold; display: block; margin-bottom: 0.3rem; }
+.result-type { font-family: Arial, sans-serif; font-size: 0.78rem; color: #999; text-transform: uppercase; letter-spacing: 1.5px; display: block; margin-bottom: 0.5rem; }
+.result-desc { font-family: Arial, sans-serif; font-size: 0.85rem; color: #bbb; }
 .results-disclaimer { font-family: Arial, sans-serif; font-size: 0.8rem; color: #999; margin-top: 1.5rem; font-style: italic; }
 
-/* ABOUT */
 .about-grid { display: grid; grid-template-columns: 280px 1fr; gap: 4rem; align-items: start; }
 .about-sidebar { display: flex; flex-direction: column; gap: 1.5rem; }
 .about-photo { width: 100%; border-radius: 2px; overflow: hidden; box-shadow: 0 8px 32px rgba(0,0,0,0.18); }
@@ -123,16 +91,20 @@ section { padding: 4rem 2rem; }
 .faq-item.open .faq-a { display: block; }
 .faq-item.open .faq-toggle { transform: rotate(45deg); }
 
-.contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; }
-.contact-info h3 { font-family: Arial, sans-serif; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 2px; color: #7a1a1a; margin-bottom: 1.5rem; }
-.contact-detail { display: flex; gap: 1rem; margin-bottom: 1.2rem; align-items: baseline; }
-.contact-label { font-family: Arial, sans-serif; font-size: 0.8rem; color: #999; min-width: 60px; text-transform: uppercase; letter-spacing: 0.5px; }
-.contact-val { font-family: Arial, sans-serif; font-size: 0.95rem; color: #333; }
-.contact-form label { display: block; font-family: Arial, sans-serif; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; color: #999; margin-bottom: 0.4rem; margin-top: 1rem; }
-.contact-form input, .contact-form textarea, .contact-form select { width: 100%; border: 1px solid #ddd; padding: 0.75rem; font-family: Arial, sans-serif; font-size: 0.95rem; background: #fff; outline: none; transition: border-color 0.2s; }
-.contact-form input:focus, .contact-form textarea:focus, .contact-form select:focus { border-color: #7a1a1a; }
-.contact-form textarea { height: 120px; resize: vertical; }
-.contact-form .btn-primary { margin-top: 1.5rem; width: 100%; }
+/* CONTACT — clean, no form */
+.contact-hero { background: #0d0d0d; padding: 5rem 2rem; text-align: center; color: #fff; border-bottom: 2px solid #7a1a1a; }
+.contact-hero h1 { font-size: 2.4rem; font-weight: normal; margin-bottom: 0.5rem; }
+.contact-hero p { font-family: Arial, sans-serif; color: #aaa; font-size: 1rem; max-width: 540px; margin: 0 auto 2.5rem; }
+.contact-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem; max-width: 900px; margin: 0 auto; }
+.contact-card { background: #1a1a1a; border: 1px solid #2a2a2a; border-top: 3px solid #7a1a1a; padding: 2rem; text-align: center; transition: border-color 0.2s; }
+.contact-card:hover { border-color: #c0392b; }
+.contact-card-icon { font-size: 1.8rem; margin-bottom: 1rem; }
+.contact-card-label { font-family: Arial, sans-serif; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 2px; color: #7a1a1a; margin-bottom: 0.5rem; }
+.contact-card-value { font-family: Arial, sans-serif; font-size: 1rem; color: #fff; }
+.contact-card-value a { color: #fff; text-decoration: none; }
+.contact-card-value a:hover { color: #c0392b; }
+.contact-note { max-width: 900px; margin: 3rem auto 0; background: #f7f7f7; border-left: 4px solid #7a1a1a; padding: 1.5rem 2rem; font-family: Arial, sans-serif; font-size: 0.95rem; color: #444; }
+.contact-note strong { color: #1a1a1a; }
 
 .cta-banner { background: #0d0d0d; color: #fff; padding: 3.5rem 2rem; text-align: center; border-top: 3px solid #7a1a1a; border-bottom: 3px solid #7a1a1a; }
 .cta-banner h2 { font-size: 1.8rem; font-weight: normal; margin-bottom: 0.5rem; }
@@ -152,8 +124,9 @@ footer a { color: #7a1a1a; text-decoration: none; }
   .hero-left { flex: none; padding: 2.5rem 1.5rem; }
   .hero-right { flex: none; height: 300px; }
   .hero-right::before { display: none; }
-  .about-grid, .contact-grid { grid-template-columns: 1fr; }
+  .about-grid { grid-template-columns: 1fr; }
   .nav-links button { padding: 1.2rem 0.5rem; font-size: 11px; }
+  .hero h1 { font-size: 2rem; }
 }
 </style>
 </head>
@@ -251,8 +224,12 @@ footer a { color: #7a1a1a; text-decoration: none; }
       <div class="award-item"><span class="award-year">$5,500,000</span><span class="award-text">Premises liability &mdash; fall on stairs</span></div>
       <div class="award-item"><span class="award-year">$5,436,346</span><span class="award-text">Judgment &mdash; premises liability</span></div>
       <div class="award-item"><span class="award-year">$5,250,000</span><span class="award-text">Motor vehicle / pedestrian collision</span></div>
+      <div class="award-item"><span class="award-year">$2,910,000</span><span class="award-text">Construction site accident</span></div>
       <div class="award-item"><span class="award-year">$2,300,000</span><span class="award-text">Fall on ice</span></div>
-      <div class="award-item" style="border:none;"><span class="award-year">$1,100,000</span><span class="award-text">Motorcycle crash</span></div>
+      <div class="award-item"><span class="award-year">$1,100,000</span><span class="award-text">Motorcycle crash</span></div>
+      <div class="award-item"><span class="award-year">$1,000,000</span><span class="award-text">Negligent security</span></div>
+      <div class="award-item"><span class="award-year">$1,000,000</span><span class="award-text">Premises liability</span></div>
+      <div class="award-item" style="border:none;"><span class="award-year">$875,000</span><span class="award-text">Motor vehicle accident</span></div>
       <div class="about-section-head">Media &amp; Community</div>
       <p>Tom is frequently sought out by media outlets for commentary on legal matters and high-profile cases. He has appeared on CNN, WBZ (CBS Boston), WCVB-TV (ABC Boston), NBC Boston, Boston 25 (Fox), WGN Chicago, NPR, and in Massachusetts Lawyers Weekly.</p>
       <p>Tom is also deeply committed to the legal community. He has served as a Director-at-Large at the Massachusetts Bar Association Young Lawyers Division and as a Student Mentor at New England School of Law.</p>
@@ -287,10 +264,14 @@ footer a { color: #7a1a1a; text-decoration: none; }
     <div class="section-divider"></div>
     <div class="results-grid">
       <div class="result-card"><span class="result-amount">$5,500,000</span><span class="result-type">Premises Liability</span><span class="result-desc">Fall on stairs</span></div>
-      <div class="result-card"><span class="result-amount">$5,436,346</span><span class="result-type">Premises Liability</span><span class="result-desc">Judgment &mdash; premises liability case</span></div>
+      <div class="result-card"><span class="result-amount">$5,436,346</span><span class="result-type">Premises Liability</span><span class="result-desc">Judgment &mdash; premises liability</span></div>
       <div class="result-card"><span class="result-amount">$5,250,000</span><span class="result-type">Motor Vehicle</span><span class="result-desc">Motor vehicle / pedestrian collision</span></div>
+      <div class="result-card"><span class="result-amount">$2,910,000</span><span class="result-type">Construction Accident</span><span class="result-desc">Construction site accident</span></div>
       <div class="result-card"><span class="result-amount">$2,300,000</span><span class="result-type">Slip &amp; Fall</span><span class="result-desc">Fall on ice</span></div>
       <div class="result-card"><span class="result-amount">$1,100,000</span><span class="result-type">Motor Vehicle</span><span class="result-desc">Motorcycle crash</span></div>
+      <div class="result-card"><span class="result-amount">$1,000,000</span><span class="result-type">Negligent Security</span><span class="result-desc">Negligent security</span></div>
+      <div class="result-card"><span class="result-amount">$1,000,000</span><span class="result-type">Premises Liability</span><span class="result-desc">Premises liability</span></div>
+      <div class="result-card"><span class="result-amount">$875,000</span><span class="result-type">Motor Vehicle</span><span class="result-desc">Motor vehicle accident</span></div>
     </div>
     <p class="results-disclaimer">Past results do not guarantee future outcomes. Each case is unique and results depend on the specific facts and circumstances involved. Attorney advertising.</p>
   </div></section>
@@ -313,33 +294,35 @@ footer a { color: #7a1a1a; text-decoration: none; }
 
 <!-- CONTACT -->
 <div class="page" id="page-contact">
-  <div class="page-header"><div class="page-header-inner"><div class="breadcrumb">Home &rsaquo; <span>Contact</span></div><h1>Get in Touch</h1></div></div>
-  <section><div class="section-inner"><div class="contact-grid">
-    <div class="contact-info">
-      <h3>Contact Tom Flaws</h3>
-      <div class="contact-detail"><span class="contact-label">Attorney</span><span class="contact-val">Thomas E. Flaws, Esq.</span></div>
-      <div class="contact-detail"><span class="contact-label">Firm</span><span class="contact-val">Altman Nussbaum Shunnarah</span></div>
-      <div class="contact-detail"><span class="contact-label">Address</span><span class="contact-val">One Gateway Center<br>300 Washington St., Ste. 200<br>Newton, MA 02458</span></div>
-      <div class="contact-detail"><span class="contact-label">Phone</span><span class="contact-val">(781) 675-2323</span></div>
-      <div class="contact-detail"><span class="contact-label">Email</span><span class="contact-val">tflaws@anslawyers.com</span></div>
-      <div style="margin-top:2rem;padding:1.5rem;background:#f7f7f7;border-left:4px solid #7a1a1a;">
-        <div style="font-family:Arial,sans-serif;font-weight:bold;margin-bottom:0.5rem;">Free Consultations</div>
-        <div style="font-family:Arial,sans-serif;font-size:0.9rem;color:#555;">Tom offers free, no-obligation consultations. There is no fee unless he wins your case. Call or message him today.</div>
+  <div class="contact-hero">
+    <h1>Let's Talk About Your Case</h1>
+    <p>Tom offers free, no-obligation consultations. There is no fee unless he wins. Reach out by phone or email &mdash; he'd be glad to hear from you.</p>
+    <div class="contact-cards">
+      <div class="contact-card">
+        <div class="contact-card-icon">&#x260E;&#xFE0F;</div>
+        <div class="contact-card-label">Direct Line</div>
+        <div class="contact-card-value"><a href="tel:7816752323">(781) 675-2323</a></div>
+      </div>
+      <div class="contact-card">
+        <div class="contact-card-icon">&#x2709;&#xFE0F;</div>
+        <div class="contact-card-label">Email</div>
+        <div class="contact-card-value"><a href="mailto:tflaws@anslawyers.com">tflaws@anslawyers.com</a></div>
+      </div>
+      <div class="contact-card">
+        <div class="contact-card-icon">&#x1F4CD;</div>
+        <div class="contact-card-label">Office</div>
+        <div class="contact-card-value">One Gateway Center<br>300 Washington St., Ste. 200<br>Newton, MA 02458</div>
+      </div>
+      <div class="contact-card">
+        <div class="contact-card-icon">&#x1F3DB;&#xFE0F;</div>
+        <div class="contact-card-label">Firm</div>
+        <div class="contact-card-value">Altman Nussbaum<br>Shunnarah</div>
       </div>
     </div>
-    <div class="contact-form">
-      <h3 style="font-family:Arial,sans-serif;font-size:0.8rem;text-transform:uppercase;letter-spacing:2px;color:#7a1a1a;margin-bottom:1.5rem;">Send Tom a Message</h3>
-      <label>Full Name</label><input type="text" placeholder="Jane Smith">
-      <label>Phone Number</label><input type="tel" placeholder="(617) 555-0100">
-      <label>Email Address</label><input type="email" placeholder="jane@example.com">
-      <label>Type of Case</label>
-      <select><option value="">Select one...</option><option>Motor Vehicle Accident</option><option>Trucking Accident</option><option>Construction Accident</option><option>Premises Liability / Slip &amp; Fall</option><option>Fall on Ice</option><option>Product Liability</option><option>Negligent Security</option><option>Pedestrian Accident</option><option>Insurance Bad Faith (c. 93A/176D)</option><option>Other</option></select>
-      <label>Tell Tom What Happened</label>
-      <textarea placeholder="Briefly describe your situation..."></textarea>
-      <button class="btn-primary" onclick="alert('Thank you! Tom will be in touch shortly.')">Send Message &rarr;</button>
-      <p style="font-family:Arial,sans-serif;font-size:0.75rem;color:#999;margin-top:1rem;">This form does not create an attorney-client relationship. Do not send confidential information until you have spoken with Tom directly.</p>
+    <div class="contact-note">
+      <strong>Ready to get started?</strong> Call Tom directly at (781) 675-2323 or send an email to tflaws@anslawyers.com. He personally responds to every inquiry and will let you know honestly whether he can help.
     </div>
-  </div></div></section>
+  </div>
 </div>
 
 <footer>
