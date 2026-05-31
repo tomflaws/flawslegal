@@ -30,8 +30,7 @@ nav { background: #0d0d0d; position: sticky; top: 0; z-index: 100; border-bottom
 .hero h1 { font-size: 2.6rem; font-weight: normal; line-height: 1.15; margin-bottom: 1rem; }
 .hero h1 em { color: #c0392b; font-style: normal; }
 .hero .tagline { font-size: 1rem; color: #aaa; font-family: Arial, sans-serif; font-style: italic; margin-bottom: 0.4rem; }
-.hero .affil { font-family: Arial, sans-serif; font-size: 0.78rem; color: #666; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 2.5rem; }
-.hero .stat-line { font-family: Arial, sans-serif; font-size: 0.88rem; color: #c0392b; letter-spacing: 0.5px; margin-bottom: 0.4rem; font-style: normal; }
+.hero .stat-line { font-family: Arial, sans-serif; font-size: 0.88rem; color: #c0392b; letter-spacing: 0.5px; margin-bottom: 2.5rem; font-style: normal; }
 .hero-btns { display: flex; gap: 1rem; flex-wrap: wrap; }
 .hero-right { flex: 0 0 48%; position: relative; overflow: hidden; }
 .hero-right img { width: 100%; height: 100%; object-fit: cover; object-position: 40% top; display: block; }
@@ -129,6 +128,24 @@ footer a { color: #7a1a1a; text-decoration: none; }
 .page-header .breadcrumb { font-family: Arial, sans-serif; font-size: 0.78rem; color: #777; margin-bottom: 0.4rem; }
 .page-header .breadcrumb span { color: #c0392b; }
 
+.pa-grid-home { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem; }
+.pa-card-home { border: 1px solid #ddd; padding: 0; cursor: pointer; transition: border-color 0.2s; overflow: hidden; }
+.pa-card-home:hover { border-color: #7a1a1a; }
+.pa-card-home.open { border-color: #7a1a1a; }
+.pa-card-top { display: flex; align-items: center; gap: 0.6rem; padding: 0.9rem 1rem; }
+.pa-icon-sm { font-size: 1.3rem; flex-shrink: 0; }
+.pa-card-top h3 { font-family: Arial, sans-serif; font-size: 0.82rem; font-weight: bold; color: #1a1a1a; flex: 1; line-height: 1.3; }
+.pa-arrow { color: #7a1a1a; font-size: 0.7rem; flex-shrink: 0; transition: transform 0.2s; }
+.pa-card-home.open .pa-arrow { transform: rotate(180deg); }
+.pa-detail { display: none; padding: 0 1rem 1rem; font-family: Arial, sans-serif; font-size: 0.82rem; color: #555; line-height: 1.6; border-top: 1px solid #eee; padding-top: 0.75rem; margin-top: 0; }
+.pa-card-home.open .pa-detail { display: block; }
+@media (max-width: 900px) { .pa-grid-home { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 500px) { .pa-grid-home { grid-template-columns: 1fr; } }
+.whattodo-steps { display: flex; flex-direction: column; gap: 2rem; margin-top: 2rem; }
+.whattodo-step { display: flex; gap: 1.5rem; align-items: flex-start; border-left: 3px solid #7a1a1a; padding-left: 1.5rem; }
+.step-number { font-family: Arial, sans-serif; font-size: 1.8rem; color: #7a1a1a; font-weight: bold; line-height: 1; flex-shrink: 0; min-width: 32px; }
+.step-content h3 { font-family: Arial, sans-serif; font-size: 1rem; font-weight: bold; margin-bottom: 0.4rem; color: #1a1a1a; }
+.step-content p { font-family: Arial, sans-serif; font-size: 0.92rem; color: #555; line-height: 1.7; margin-bottom: 0.5rem; }
 @media (max-width: 768px) {
   .nav-toggle { display: flex; }
   .nav-links { display: none; position: absolute; top: 100%; left: 0; right: 0; background: #0d0d0d; flex-direction: column; border-top: 1px solid #222; border-bottom: 2px solid #7a1a1a; z-index: 200; }
@@ -172,6 +189,7 @@ footer a { color: #7a1a1a; text-decoration: none; }
       <button onclick="showPage('practice')" id="nav-practice">Practice Areas</button>
       <button onclick="showPage('results')" id="nav-results">Results</button>
       <button onclick="showPage('faq')" id="nav-faq">FAQ</button>
+      <button onclick="showPage('whattodo')" id="nav-whattodo">After an Accident</button>
       <button onclick="showPage('contact')" id="nav-contact">Contact</button>
     </div>
   </div>
@@ -187,7 +205,6 @@ footer a { color: #7a1a1a; text-decoration: none; }
         <h1>When You're Hurt,<br><em>You Deserve a Fighter.</em></h1>
         <p class="tagline">Fighting for the injured. Committed to results.</p>
         <p class="stat-line">Over $50 million recovered for injured clients.</p>
-        <p class="affil">Altman Nussbaum Shunnarah &middot; Newton, MA</p>
         <div class="hero-btns">
           <button class="btn-primary" onclick="showPage('contact')">Free Consultation</button>
           <button class="btn-outline" onclick="showPage('results')">Our Results</button>
@@ -218,11 +235,43 @@ footer a { color: #7a1a1a; text-decoration: none; }
     <div class="section-label">Practice Areas</div>
     <div class="section-title">What Tom Handles.</div>
     <div class="section-divider"></div>
-    <div class="pa-grid">
-      <div class="pa-card" onclick="showPage('practice')"><div class="pa-icon">&#x1F697;</div><h3>Motor Vehicle Accidents</h3><p>Car, truck, motorcycle, and pedestrian accidents. Tom fights insurance companies to get you what you deserve.</p></div>
-      <div class="pa-card" onclick="showPage('practice')"><div class="pa-icon">&#x1F3D7;&#xFE0F;</div><h3>Construction Accidents</h3><p>Falls, equipment failures, and worksite injuries. Holding negligent contractors and employers accountable.</p></div>
-      <div class="pa-card" onclick="showPage('practice')"><div class="pa-icon">&#x1F3E2;</div><h3>Premises Liability</h3><p>Slip and falls, unsafe property conditions. Property owners have a duty &mdash; Tom holds them to it.</p></div>
-      <div class="pa-card" onclick="showPage('practice')"><div class="pa-icon">&#x2696;&#xFE0F;</div><h3>Insurance Bad Faith</h3><p>When insurers fail to deal fairly with injured claimants, Massachusetts law provides powerful remedies.</p></div>
+    <div class="pa-grid-home">
+      <div class="pa-card-home" onclick="togglePA(this)">
+        <div class="pa-card-top"><div class="pa-icon-sm">&#x1F697;</div><h3>Motor Vehicle Accidents</h3><span class="pa-arrow">&#9660;</span></div>
+        <div class="pa-detail">Car accidents, truck accidents, motorcycle crashes, pedestrian knockdowns, and bicycle accidents. Insurance companies move fast after a crash to protect their interests &mdash; Tom moves faster. He handles all communications with insurers, investigates liability, and fights to recover full compensation for your injuries, lost wages, and pain and suffering.</div>
+      </div>
+      <div class="pa-card-home" onclick="togglePA(this)">
+        <div class="pa-card-top"><div class="pa-icon-sm">&#x1F69B;</div><h3>Trucking Accidents</h3><span class="pa-arrow">&#9660;</span></div>
+        <div class="pa-detail">Commercial truck crashes involve federal regulations, complex insurance structures, and well-funded corporate defendants. Tom has the experience to take on trucking companies and their insurers, investigate black box data and driver logs, and hold every responsible party accountable.</div>
+      </div>
+      <div class="pa-card-home" onclick="togglePA(this)">
+        <div class="pa-card-top"><div class="pa-icon-sm">&#x1F3D7;&#xFE0F;</div><h3>Construction Accidents</h3><span class="pa-arrow">&#9660;</span></div>
+        <div class="pa-detail">Falls from scaffolding, equipment malfunctions, struck-by incidents, and unsafe worksites cause some of the most devastating injuries. Tom understands OSHA standards and Massachusetts labor laws, and knows how to identify every responsible party &mdash; general contractors, subcontractors, property owners, and equipment manufacturers.</div>
+      </div>
+      <div class="pa-card-home" onclick="togglePA(this)">
+        <div class="pa-card-top"><div class="pa-icon-sm">&#x1F3E2;</div><h3>Premises Liability</h3><span class="pa-arrow">&#9660;</span></div>
+        <div class="pa-detail">Property owners and managers have a legal duty to maintain safe conditions. When they fail &mdash; through broken stairs, inadequate lighting, wet floors, or code violations &mdash; and someone is hurt, Tom holds them accountable. He has recovered millions for clients injured on commercial, residential, and public properties throughout Massachusetts.</div>
+      </div>
+      <div class="pa-card-home" onclick="togglePA(this)">
+        <div class="pa-card-top"><div class="pa-icon-sm">&#x1F9CA;</div><h3>Slip &amp; Fall / Fall on Ice</h3><span class="pa-arrow">&#9660;</span></div>
+        <div class="pa-detail">Massachusetts winters create serious hazards, and property owners are required to address them. If you slipped on ice, snow, or a wet surface due to an owner's failure to maintain safe conditions, you may have a claim. These cases require quick action &mdash; evidence disappears fast, and Tom knows how to preserve it.</div>
+      </div>
+      <div class="pa-card-home" onclick="togglePA(this)">
+        <div class="pa-card-top"><div class="pa-icon-sm">&#x2699;&#xFE0F;</div><h3>Product Liability</h3><span class="pa-arrow">&#9660;</span></div>
+        <div class="pa-detail">When a defective product causes injury &mdash; whether it's faulty equipment, a dangerous drug, or a poorly designed consumer product &mdash; the manufacturer, distributor, and seller may all be liable. Tom works with engineering and industry experts to build product liability cases against even the largest corporations.</div>
+      </div>
+      <div class="pa-card-home" onclick="togglePA(this)">
+        <div class="pa-card-top"><div class="pa-icon-sm">&#x1F512;</div><h3>Negligent Security</h3><span class="pa-arrow">&#9660;</span></div>
+        <div class="pa-detail">If you were assaulted, attacked, or injured on someone else's property because they failed to provide adequate security &mdash; proper lighting, security personnel, working locks, or surveillance &mdash; the property owner may be liable. Tom has recovered significant verdicts and settlements in negligent security cases throughout Massachusetts.</div>
+      </div>
+      <div class="pa-card-home" onclick="togglePA(this)">
+        <div class="pa-card-top"><div class="pa-icon-sm">&#x1F6B6;</div><h3>Pedestrian Accidents</h3><span class="pa-arrow">&#9660;</span></div>
+        <div class="pa-detail">Pedestrians struck by vehicles suffer some of the most catastrophic injuries. Tom pursues full accountability against negligent drivers, municipalities that fail to maintain safe crosswalks, and any other responsible party. No amount of compensation undoes a serious injury &mdash; but Tom makes sure his clients are made as whole as the law allows.</div>
+      </div>
+      <div class="pa-card-home" onclick="togglePA(this)">
+        <div class="pa-card-top"><div class="pa-icon-sm">&#x2696;&#xFE0F;</div><h3>Insurance Bad Faith</h3><span class="pa-arrow">&#9660;</span></div>
+        <div class="pa-detail">Under M.G.L. c. 93A and c. 176D, Massachusetts insurance companies must investigate claims promptly and make fair settlement offers when liability is clear. When they stonewall, lowball, or unreasonably delay, they may owe double or triple the actual damages plus attorney's fees. Tom has used these powerful statutes to turn bad-faith denials into significant recoveries for his clients.</div>
+      </div>
     </div>
   </div></section>
 </div>
@@ -270,6 +319,12 @@ footer a { color: #7a1a1a; text-decoration: none; }
       <div class="award-item"><span class="award-year">$1,000,000</span><span class="award-text">Negligent security</span></div>
       <div class="award-item"><span class="award-year">$1,000,000</span><span class="award-text">Premises liability</span></div>
       <div class="award-item" style="border:none;"><span class="award-year">$875,000</span><span class="award-text">Motor vehicle accident</span></div>
+      <div class="about-section-head">Geographic Reach</div>
+      <p>Tom is based in Greater Boston and handles cases throughout Massachusetts, New Hampshire, and New England. He has been admitted <em>pro hac vice</em> &mdash; a court procedure that allows an out-of-state attorney to appear in a jurisdiction where he is not licensed &mdash; in other states, and continues to do so for the right cases. Tom selectively handles catastrophic injury matters around the country.</p>
+
+      <div class="about-section-head">Attorney Referrals Welcome</div>
+      <p>Tom and Altman Nussbaum Shunnarah welcome referrals from other attorneys. The firm has the resources of a large national practice, and frequently joins forces with smaller firms on catastrophic and complex cases &mdash; bringing investigative depth, expert networks, and litigation firepower that benefit clients and co-counsel alike. If you have a serious case and want to discuss whether it's a fit, Tom welcomes that call.</p>
+
       <div class="about-section-head">Media &amp; Community</div>
       <p>Tom is frequently sought out by media outlets for commentary on legal matters and high-profile cases. He has appeared on NBC Boston, WBZ (CBS Boston), WCVB-TV (ABC Boston), Boston 25 (Fox), WGN Chicago, NPR/WBUR, the Boston Globe, and in Massachusetts Lawyers Weekly.</p>
       <p>Tom is also deeply committed to the legal community. He has served as a Director-at-Large at the Massachusetts Bar Association Young Lawyers Division and as a Student Mentor at New England School of Law.</p>
@@ -360,6 +415,75 @@ footer a { color: #7a1a1a; text-decoration: none; }
   </div></section>
 </div>
 
+<!-- WHAT TO DO -->
+<div class="page" id="page-whattodo">
+  <div class="page-header"><div class="page-header-inner"><div class="breadcrumb">Home &rsaquo; <span>After an Accident</span></div><h1>What To Do After an Accident</h1></div></div>
+  <section><div class="section-inner" style="max-width:860px;">
+
+    <p style="font-family:Arial,sans-serif;font-size:1rem;color:#444;margin-bottom:2rem;line-height:1.8;">An accident is one of the most disorienting experiences a person can go through. In the immediate aftermath, it can be hard to know what to do or who to trust. The most important thing to understand is this: <strong>your health comes first.</strong> Everything else can be sorted out &mdash; but only if you take the right steps early.</p>
+
+    <div class="whattodo-steps">
+
+      <div class="whattodo-step">
+        <div class="step-number">1</div>
+        <div class="step-content">
+          <h3>Seek Medical Attention Immediately</h3>
+          <p>Even if you feel okay, see a doctor as soon as possible. Many serious injuries &mdash; including spinal injuries, traumatic brain injuries, and internal bleeding &mdash; don't present obvious symptoms right away. A medical record created close in time to the accident is also critical evidence in your case. Gaps in treatment are one of the first things insurance companies use against injured people.</p>
+        </div>
+      </div>
+
+      <div class="whattodo-step">
+        <div class="step-number">2</div>
+        <div class="step-content">
+          <h3>Document Everything You Can</h3>
+          <p>If you are physically able, photograph the scene, your injuries, any vehicles involved, and any hazardous conditions. Get the names and contact information of witnesses. If police respond, make sure a report is filed and get the report number. Write down everything you remember while it is fresh &mdash; details fade quickly.</p>
+        </div>
+      </div>
+
+      <div class="whattodo-step">
+        <div class="step-number">3</div>
+        <div class="step-content">
+          <h3>Do Not Talk to the Other Party's Insurance Company</h3>
+          <p>Insurance adjusters are trained to minimize what they pay out. They may contact you quickly, seem sympathetic, and ask for a recorded statement. Do not give one. Anything you say &mdash; even something innocuous &mdash; can be used to reduce or deny your claim. You are not required to speak with them before consulting an attorney.</p>
+        </div>
+      </div>
+
+      <div class="whattodo-step">
+        <div class="step-number">4</div>
+        <div class="step-content">
+          <h3>Contact Tom as Soon as Possible</h3>
+          <p>This is one of the most important steps, and the sooner the better. Evidence disappears. Surveillance footage gets overwritten. Witnesses become harder to locate. When Tom gets involved early, he can investigate the case while the facts are fresh &mdash; preserving evidence, identifying all responsible parties, and building the strongest possible case on your behalf.</p>
+          <p>Early involvement also means you can focus entirely on your recovery. Tom handles everything else &mdash; the insurance companies, the paperwork, the investigation &mdash; so that getting your health back is your only job.</p>
+        </div>
+      </div>
+
+      <div class="whattodo-step">
+        <div class="step-number">5</div>
+        <div class="step-content">
+          <h3>Be Careful on Social Media</h3>
+          <p>Do not post about the accident, your injuries, or your activities on social media. Insurance companies and defense attorneys routinely monitor claimants' social media accounts looking for anything that could be used to undermine your claim. When in doubt, don't post.</p>
+        </div>
+      </div>
+
+      <div class="whattodo-step">
+        <div class="step-number">6</div>
+        <div class="step-content">
+          <h3>Keep Records of Everything</h3>
+          <p>Save all medical bills, records, and receipts. Keep a journal documenting your pain levels, limitations, and how the injury is affecting your daily life. Track lost time from work. These records form the foundation of your damages claim and directly affect the value of your case.</p>
+        </div>
+      </div>
+
+    </div>
+
+    <div style="background:#f7f7f7;border-left:4px solid #7a1a1a;padding:1.5rem 2rem;margin-top:3rem;">
+      <p style="font-family:Arial,sans-serif;font-size:0.95rem;color:#333;margin:0;"><strong>Remember:</strong> Tom offers free consultations and there is no fee unless he wins. You have nothing to lose by making the call &mdash; and potentially a great deal to gain by making it early.</p>
+    </div>
+
+    <div style="margin-top:2rem;"><button class="btn-primary" onclick="showPage('contact')" style="background:#7a1a1a;">Call Tom Today &rarr;</button></div>
+
+  </div></section>
+</div>
+
 <!-- CONTACT -->
 <div class="page" id="page-contact">
   <div class="contact-hero">
@@ -372,6 +496,7 @@ footer a { color: #7a1a1a; text-decoration: none; }
       <div class="contact-card"><div class="contact-card-icon">&#x1F3DB;&#xFE0F;</div><div class="contact-card-label">Firm</div><div class="contact-card-value">Altman Nussbaum<br>Shunnarah</div></div>
     </div>
     <div class="contact-note"><strong>Ready to get started?</strong> Call Tom directly at (781) 675-2323 or send an email to tflaws@anslawyers.com. He personally responds to every inquiry and will let you know honestly whether he can help.</div>
+    <div class="contact-note" style="margin-top:1rem;"><strong>Office Access:</strong> Parking is available at One Gateway Center. The office is fully accessible to individuals with mobility needs.</div>
   </div>
 </div>
 
@@ -381,7 +506,7 @@ footer a { color: #7a1a1a; text-decoration: none; }
 </footer>
 
 <script>
-const PAGES = ['home','about','practice','results','faq','contact'];
+const PAGES = ['home','about','practice','results','faq','whattodo','contact'];
 
 function showPage(id, pushState) {
   if (!PAGES.includes(id)) id = 'home';
@@ -417,6 +542,9 @@ function toggleNav() {
 }
 function toggleFaq(el) {
   el.parentElement.classList.toggle('open');
+}
+function togglePA(card) {
+  card.classList.toggle('open');
 }
 function toggleResult(card) {
   const wasOpen = card.classList.contains('open');
