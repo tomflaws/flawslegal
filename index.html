@@ -3,381 +3,536 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Flaws Case Manager</title>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<title>Thomas E. Flaws - Personal Injury Attorney | Massachusetts</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Segoe UI',Calibri,Arial,sans-serif;background:#EEF2F7;color:#222;font-size:13px}
+:root {
+  --ink: #111111;
+  --black: #0c0c0c;
+  --black2: #161616;
+  --crimson: #8e1c1c;
+  --crimson-bright: #c0392b;
+  --warm: #faf9f7;
+  --line: #e6e2dc;
+  --gray: #5a5a5a;
+  --serif: 'Playfair Display', Georgia, serif;
+  --sans: 'Inter', Arial, sans-serif;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { font-family: var(--sans); color: var(--ink); background: #fff; font-size: 16px; line-height: 1.7; -webkit-font-smoothing: antialiased; }
 
-#pw{display:flex;align-items:center;justify-content:center;min-height:100vh;background:#1F3864}
-.pw-card{background:#fff;border-radius:12px;padding:40px 32px;text-align:center;width:320px;box-shadow:0 8px 32px rgba(0,0,0,.3)}
-.pw-logo{font-size:44px;margin-bottom:12px}
-.pw-card h1{font-size:18px;color:#1F3864;margin-bottom:4px;font-weight:600}
-.pw-card p{font-size:12px;color:#888;margin-bottom:24px}
-.pw-card input{width:100%;padding:9px 12px;border:1.5px solid #ddd;border-radius:6px;font-size:14px;margin-bottom:6px;font-family:inherit}
-.pw-card input:focus{outline:none;border-color:#1F3864}
-.pw-card button{width:100%;padding:9px;background:#1F3864;color:#fff;border:none;border-radius:6px;font-size:14px;cursor:pointer;margin-top:10px;font-family:inherit}
-.pw-card button:hover{background:#162B4F}
-#pw-err{display:none;color:#c00;font-size:12px;margin-top:4px}
+nav { background: rgba(12,12,12,0.97); backdrop-filter: blur(8px); position: sticky; top: 0; z-index: 100; border-bottom: 1px solid rgba(192,57,43,0.35); }
+.nav-inner { max-width: 1140px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; padding: 0 1.25rem; }
+.nav-logo { cursor: pointer; padding: 0.6rem 0; flex-shrink: 0; display: flex; align-items: center; gap: 0.85rem; }
+.nav-logo img.logo-img { height: 42px; width: auto; display: block; }
+.nav-name-block { border-left: 1px solid #2e2e2e; padding-left: 0.85rem; line-height: 1.3; }
+.nav-name-block .nav-name { color: #e0e0e0; font-family: Georgia, serif; font-size: 0.92rem; letter-spacing: 0.3px; display: block; }
+.nav-name-block .nav-sub { color: #c0392b; font-family: var(--sans); font-size: 0.6rem; font-weight: 500; text-transform: uppercase; letter-spacing: 2.5px; display: block; margin-top: 2px; }
+.nav-toggle { display: none; background: none; border: none; cursor: pointer; padding: 0.5rem; flex-direction: column; gap: 5px; }
+.nav-toggle span { display: block; width: 22px; height: 2px; background: #bbb; border-radius: 2px; }
+.nav-links { display: flex; align-items: center; }
+.nav-links button { background: none; border: none; color: #b9b9b9; font-family: var(--sans); font-weight: 500; font-size: 11.5px; letter-spacing: 1.2px; text-transform: uppercase; padding: 1.4rem 0.8rem; cursor: pointer; transition: color 0.2s; white-space: nowrap; position: relative; }
+.nav-links button::after { content: ''; position: absolute; left: 0.8rem; right: 0.8rem; bottom: 0.95rem; height: 1.5px; background: var(--crimson-bright); transform: scaleX(0); transition: transform 0.25s; transform-origin: left; }
+.nav-links button:hover, .nav-links button.active { color: #fff; }
+.nav-links button.active::after { transform: scaleX(1); }
 
-#topbar{background:#1F3864;color:#fff;padding:10px 18px;position:sticky;top:0;z-index:100;display:flex;align-items:center;gap:12px;flex-wrap:wrap;box-shadow:0 2px 6px rgba(0,0,0,.25)}
-#top-l{flex:1;min-width:180px}
-#app-title{font-size:15px;font-weight:600}
-#app-sub{font-size:11px;opacity:.85;margin-top:2px}
-#app-sub b{color:#fff}
-#top-r{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
-#srch{padding:6px 10px;border:none;border-radius:4px;font-size:13px;width:160px;font-family:inherit}
-#srch:focus{outline:2px solid #4472C4}
-.tbtn{padding:6px 13px;border-radius:4px;border:1.5px solid rgba(255,255,255,.45);background:transparent;color:#fff;font-size:12px;cursor:pointer;white-space:nowrap;font-family:inherit}
-.tbtn:hover{background:rgba(255,255,255,.15)}
+.page { display: none; }
+.page.active { display: block; animation: pageIn 0.35s ease; }
+@keyframes pageIn { from { opacity: 0; } to { opacity: 1; } }
 
-#add-panel{display:none;background:#fff;border-bottom:1.5px solid #ddd;padding:14px 18px;gap:10px;align-items:flex-end;flex-wrap:wrap}
-#add-panel label{font-size:10px;color:#666;display:block;margin-bottom:3px;font-weight:600;text-transform:uppercase;letter-spacing:.3px}
-#new-name{width:360px;max-width:100%;padding:7px 10px;border:1.5px solid #ddd;border-radius:4px;font-size:13px;font-family:inherit}
-#new-name:focus{outline:none;border-color:#1F3864}
-#new-cat{padding:7px 10px;border:1.5px solid #ddd;border-radius:4px;font-size:13px;cursor:pointer;font-family:inherit}
-#add-btn{padding:7px 18px;background:#1F3864;color:#fff;border:none;border-radius:4px;font-size:13px;cursor:pointer;font-family:inherit}
-#add-btn:hover:not(:disabled){background:#162B4F}
-#add-btn:disabled{opacity:.45;cursor:default}
-.add-hint{font-size:11px;color:#999;align-self:center}
+.hero { background: var(--black); color: #fff; display: flex; min-height: 580px; position: relative; overflow: hidden; }
+.hero-left { flex: 0 0 52%; display: flex; align-items: center; padding: 4.5rem 3rem 4.5rem 4rem; position: relative; z-index: 2; }
+.hero-text { max-width: 480px; }
+.hero-eyebrow { font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: 4px; color: var(--crimson-bright); margin-bottom: 1.6rem; }
+.hero-rule { width: 48px; height: 2px; background: var(--crimson); margin-bottom: 1.8rem; }
+.hero h1 { font-family: var(--serif); font-size: 3.2rem; font-weight: 500; line-height: 1.12; margin-bottom: 1.2rem; letter-spacing: -0.5px; }
+.hero h1 em { color: var(--crimson-bright); font-style: italic; }
+.hero-btns { display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 2.4rem; }
+.hero-right { flex: 0 0 48%; position: relative; overflow: hidden; }
+.hero-right img { width: 100%; height: 100%; object-fit: cover; object-position: 40% top; display: block; }
+.hero-right::before { content: ''; position: absolute; top: 0; left: 0; bottom: 0; width: 120px; background: linear-gradient(to right, #0c0c0c, transparent); z-index: 1; }
+.hero-right::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 80px; background: linear-gradient(to top, rgba(12,12,12,0.55), transparent); z-index: 1; }
 
-#case-list{padding:12px 16px 48px;display:flex;flex-direction:column;gap:14px}
+.btn-primary { background: var(--crimson); color: #fff; border: none; padding: 0.95rem 2.1rem; font-size: 0.88rem; font-weight: 500; letter-spacing: 0.8px; cursor: pointer; font-family: var(--sans); transition: all 0.25s; }
+.btn-primary:hover { background: var(--crimson-bright); transform: translateY(-1px); box-shadow: 0 8px 24px rgba(142,28,28,0.35); }
+.btn-outline { background: transparent; color: #fff; border: 1px solid #4a4a4a; padding: 0.95rem 2.1rem; font-size: 0.88rem; font-weight: 500; letter-spacing: 0.8px; cursor: pointer; font-family: var(--sans); transition: all 0.25s; }
+.btn-outline:hover { border-color: var(--crimson-bright); color: var(--crimson-bright); transform: translateY(-1px); }
 
-.sect{border-radius:6px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.1)}
-.sect-hd{padding:9px 14px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;color:#fff;user-select:none}
-.sect-hd:hover{filter:brightness(.94)}
-.sect-title{font-weight:600;font-size:14px}
-.badge{background:rgba(255,255,255,.25);border-radius:10px;padding:1px 9px;font-size:11px}
-.tbl-wrap{overflow-x:auto}
+.stat-strip { background: var(--black2); border-top: 1px solid #222; border-bottom: 3px solid var(--crimson); padding: 1.6rem 1.5rem; }
+.stat-strip-inner { max-width: 1000px; margin: 0 auto; display: flex; justify-content: space-around; gap: 1.5rem; flex-wrap: wrap; }
+.stat-item { text-align: center; }
+.stat-value { font-family: var(--serif); font-size: 1.9rem; color: #fff; font-weight: 500; display: block; line-height: 1.2; }
+.stat-label { font-size: 0.68rem; font-weight: 500; text-transform: uppercase; letter-spacing: 2.5px; color: #8a8a8a; display: block; margin-top: 0.25rem; }
 
-/* Case row grid: name | next-action | done-btn | category */
-.row{display:grid;grid-template-columns:minmax(190px,1.5fr) minmax(130px,1fr) 32px 112px;gap:8px;padding:5px 12px;align-items:center;border-bottom:.5px solid rgba(0,0,0,.07);min-width:500px}
-.hdr-row{padding:4px 12px;border-bottom:1px solid rgba(0,0,0,.12)!important}
-.hdr-row div{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.3px;color:#555}
-.c-name{font-size:12px;line-height:1.4;word-break:break-word;overflow-wrap:anywhere}
-.c-na input,.na-in{width:100%;padding:4px 7px;border:1px solid #ddd;border-radius:3px;font-size:12px;font-family:inherit;background:rgba(255,255,255,.75)}
-.na-in:focus{outline:2px solid rgba(31,56,100,.35);background:#fff}
-.c-cat select,.cat-sel{width:100%;padding:4px 6px;border:1px solid #ddd;border-radius:3px;font-size:12px;cursor:pointer;font-family:inherit}
+section { padding: 4.5rem 1.5rem; }
+section.warm { background: var(--warm); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.section-inner { max-width: 1140px; margin: 0 auto; }
+.section-label { font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: 3.5px; color: var(--crimson); margin-bottom: 0.6rem; }
+.section-title { font-family: var(--serif); font-size: 2.1rem; font-weight: 500; margin-bottom: 1rem; letter-spacing: -0.3px; }
+.section-divider { width: 48px; height: 2px; background: var(--crimson); margin-bottom: 2.2rem; }
+.reveal { opacity: 0; transform: translateY(18px); transition: opacity 0.6s ease, transform 0.6s ease; }
+.reveal.visible { opacity: 1; transform: none; }
 
-/* ✓ Done button */
-.done-btn{width:28px;height:28px;border-radius:50%;border:1.5px solid #ccc;background:transparent;color:#999;font-size:13px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s;font-family:inherit}
-.done-btn:hover:not(:disabled){border-color:#1C4B2D;color:#1C4B2D;background:#E2EFD9}
-.done-btn:disabled{opacity:.28;cursor:default}
+.why-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 1.25rem; margin-top: 1.75rem; }
+.why-card { background: #fff; border: 1px solid var(--line); border-top: 3px solid var(--crimson); padding: 1.6rem 1.4rem; transition: all 0.25s; }
+.why-card:hover { transform: translateY(-3px); box-shadow: 0 12px 32px rgba(0,0,0,0.07); }
+.why-card h3 { font-size: 0.95rem; font-weight: 600; margin-bottom: 0.5rem; }
+.why-card p { font-size: 0.87rem; color: var(--gray); line-height: 1.65; font-weight: 300; }
 
-/* Completed tasks bar */
-.ct-bar{min-width:500px;padding:4px 12px 4px 14px;border-bottom:.5px solid rgba(0,0,0,.07);background:inherit}
-.ct-toggle{background:none;border:none;cursor:pointer;font-size:11px;color:#555;padding:2px 6px;border-radius:3px;font-family:inherit}
-.ct-toggle:hover{background:rgba(0,0,0,.06)}
-.ct-list{margin-top:4px;padding:4px 0 4px 8px;display:flex;flex-direction:column;gap:3px}
-.ct-item{display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:11px;color:#555;padding:2px 4px}
-.ct-item span{flex:1;word-break:break-word}
-.ct-item em{color:#999;font-size:10px}
-.ct-del{background:none;border:none;cursor:pointer;color:#bbb;font-size:11px;padding:1px 4px;border-radius:2px;font-family:inherit;flex-shrink:0}
-.ct-del:hover{color:#c00;background:rgba(200,0,0,.08)}
+.pa-grid-home { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.8rem; }
+.pa-card-home { background: #fff; border: 1px solid var(--line); cursor: pointer; transition: all 0.22s; overflow: hidden; }
+.pa-card-home:hover { border-color: var(--crimson); box-shadow: 0 6px 20px rgba(0,0,0,0.06); }
+.pa-card-home.open { border-color: var(--crimson); }
+.pa-card-top { display: flex; align-items: center; gap: 0.65rem; padding: 1rem 1.1rem; }
+.pa-icon-sm { font-size: 1.25rem; flex-shrink: 0; }
+.pa-card-top h3 { font-size: 0.84rem; font-weight: 600; flex: 1; line-height: 1.35; }
+.pa-arrow { color: var(--crimson); font-size: 0.65rem; flex-shrink: 0; transition: transform 0.25s; }
+.pa-card-home.open .pa-arrow { transform: rotate(180deg); }
+.pa-detail { display: none; padding: 0.85rem 1.1rem 1.1rem; font-size: 0.84rem; color: var(--gray); line-height: 1.65; font-weight: 300; border-top: 1px solid var(--line); }
+.pa-card-home.open .pa-detail { display: block; }
 
-.empty{padding:12px 14px;font-size:12px;color:#999;font-style:italic;background:#fff;min-width:500px}
+.pa-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.25rem; }
+.pa-card { background: #fff; border: 1px solid var(--line); padding: 1.75rem 1.5rem; transition: all 0.25s; }
+.pa-card:hover { border-color: var(--crimson); transform: translateY(-3px); box-shadow: 0 12px 32px rgba(0,0,0,0.07); }
+.pa-icon { font-size: 1.8rem; margin-bottom: 0.8rem; }
+.pa-card h3 { font-size: 1rem; font-weight: 600; margin-bottom: 0.5rem; }
+.pa-card p { font-size: 0.87rem; color: var(--gray); line-height: 1.6; font-weight: 300; }
 
-#toast{display:none;position:fixed;bottom:20px;right:20px;background:#333;color:#fff;padding:10px 16px;border-radius:6px;font-size:12px;z-index:200;max-width:300px;box-shadow:0 4px 12px rgba(0,0,0,.25)}
-#footer{text-align:center;font-size:10px;color:#aaa;padding:8px 16px;border-top:1px solid #ddd}
+.results-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.25rem; }
+.result-card { background: var(--black); color: #fff; border-top: 3px solid var(--crimson); overflow: hidden; transition: all 0.25s; }
+.result-card:hover { transform: translateY(-3px); box-shadow: 0 14px 36px rgba(0,0,0,0.22); }
+.result-card-header { padding: 1.7rem 1.4rem; text-align: center; cursor: pointer; }
+.result-amount { font-family: var(--serif); font-size: 1.85rem; color: var(--crimson-bright); font-weight: 500; display: block; margin-bottom: 0.3rem; }
+.result-type { font-size: 0.68rem; font-weight: 500; color: #999; text-transform: uppercase; letter-spacing: 2px; display: block; margin-bottom: 0.45rem; }
+.result-desc { font-size: 0.83rem; color: #b8b8b8; font-weight: 300; }
+.result-toggle { font-size: 0.65rem; font-weight: 500; color: var(--crimson-bright); text-transform: uppercase; letter-spacing: 1.5px; margin-top: 0.8rem; display: block; }
+.result-detail { display: none; padding: 0 1.4rem 1.4rem; border-top: 1px solid #232323; }
+.result-detail p { font-size: 0.85rem; color: #b8b8b8; line-height: 1.7; margin-top: 1rem; font-weight: 300; }
+.result-detail .detail-meta { font-size: 0.72rem; color: #6e6e6e; margin-top: 0.8rem; }
+.result-card.open .result-detail { display: block; }
+.results-disclaimer { font-size: 0.78rem; color: #999; margin-top: 1.75rem; font-style: italic; font-weight: 300; }
 
-@media(max-width:580px){#srch{width:130px}#new-name{width:100%}#case-list{padding:8px 8px 40px}}
+.about-grid { display: grid; grid-template-columns: 280px 1fr; gap: 3.5rem; align-items: start; }
+.about-sidebar { display: flex; flex-direction: column; gap: 1.3rem; }
+.about-photo { width: 100%; overflow: hidden; box-shadow: 0 16px 48px rgba(0,0,0,0.18); }
+.about-photo img { width: 100%; display: block; }
+.sidebar-box { background: var(--warm); border: 1px solid var(--line); border-left: 3px solid var(--crimson); padding: 1.2rem 1.35rem; }
+.sidebar-box h4 { font-size: 0.68rem; font-weight: 600; text-transform: uppercase; letter-spacing: 2.5px; color: var(--crimson); margin-bottom: 0.8rem; }
+.sidebar-box ul { list-style: none; }
+.sidebar-box ul li { font-size: 0.85rem; color: #444; padding: 0.32rem 0; border-bottom: 1px solid var(--line); font-weight: 300; }
+.sidebar-box ul li:last-child { border-bottom: none; }
+.sidebar-box ul li::before { content: '\25B8 '; color: var(--crimson); font-size: 0.68rem; }
+.about-text p { margin-bottom: 1.1rem; color: #3d3d3d; font-size: 0.96rem; font-weight: 300; line-height: 1.8; }
+.about-text .lead { font-family: var(--serif); font-size: 1.18rem; color: var(--ink); font-weight: 400; line-height: 1.6; }
+.media-grid { display: flex; flex-wrap: wrap; gap: 0.45rem; margin-top: 0.5rem; }
+.media-badge { background: var(--black); color: #ccc; font-size: 0.7rem; font-weight: 500; padding: 0.3rem 0.65rem; text-decoration: none; display: inline-block; transition: all 0.2s; }
+.media-badge:hover { background: var(--crimson); color: #fff; transform: translateY(-1px); }
+.award-item { display: flex; gap: 1rem; align-items: baseline; padding: 0.5rem 0; border-bottom: 1px solid var(--line); }
+.award-year { font-size: 0.84rem; color: var(--crimson); font-weight: 600; min-width: 100px; flex-shrink: 0; }
+.award-text { font-size: 0.88rem; color: #3d3d3d; font-weight: 300; }
+.about-section-head { font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 2.5px; color: var(--crimson); margin: 2rem 0 0.7rem; }
+
+.faq-item { border-bottom: 1px solid var(--line); }
+.faq-q { display: flex; justify-content: space-between; align-items: center; padding: 1.2rem 0; cursor: pointer; font-weight: 600; font-size: 0.95rem; gap: 1rem; transition: color 0.2s; }
+.faq-q:hover { color: var(--crimson); }
+.faq-toggle { color: var(--crimson); font-size: 1.3rem; font-weight: 300; flex-shrink: 0; transition: transform 0.25s; }
+.faq-a { font-size: 0.92rem; color: var(--gray); line-height: 1.75; padding-bottom: 1.2rem; display: none; font-weight: 300; }
+.faq-item.open .faq-a { display: block; }
+.faq-item.open .faq-toggle { transform: rotate(45deg); }
+
+.whattodo-steps { display: flex; flex-direction: column; gap: 2.2rem; margin-top: 2rem; }
+.whattodo-step { display: flex; gap: 1.6rem; align-items: flex-start; border-left: 2px solid var(--crimson); padding-left: 1.6rem; }
+.step-number { font-family: var(--serif); font-size: 2rem; color: var(--crimson); font-weight: 500; line-height: 1; flex-shrink: 0; min-width: 36px; }
+.step-content h3 { font-size: 1rem; font-weight: 600; margin-bottom: 0.45rem; }
+.step-content p { font-size: 0.92rem; color: var(--gray); line-height: 1.75; margin-bottom: 0.5rem; font-weight: 300; }
+
+.contact-hero { background: var(--black); padding: 4.5rem 1.5rem 5rem; text-align: center; color: #fff; border-bottom: 3px solid var(--crimson); }
+.contact-hero h1 { font-family: var(--serif); font-size: 2.4rem; font-weight: 500; margin-bottom: 0.8rem; }
+.contact-hero > p { color: #a8a8a8; font-size: 0.95rem; max-width: 540px; margin: 0 auto 2.75rem; line-height: 1.75; font-weight: 300; }
+.contact-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.2rem; max-width: 900px; margin: 0 auto; }
+.contact-card { background: var(--black2); border: 1px solid #2c2c2c; border-top: 3px solid var(--crimson-bright); padding: 1.8rem 1.25rem; text-align: center; transition: all 0.25s; }
+.contact-card:hover { transform: translateY(-3px); box-shadow: 0 12px 32px rgba(0,0,0,0.3); }
+.contact-card-icon { font-size: 1.55rem; margin-bottom: 0.8rem; }
+.contact-card-label { font-size: 0.65rem; font-weight: 600; text-transform: uppercase; letter-spacing: 2.5px; color: var(--crimson-bright); margin-bottom: 0.5rem; }
+.contact-card-value { font-size: 0.92rem; color: #e8e8e8; line-height: 1.6; font-weight: 300; }
+.contact-card-value a { color: #e8e8e8; text-decoration: none; transition: color 0.2s; }
+.contact-card-value a:hover { color: var(--crimson-bright); }
+.contact-note { max-width: 900px; margin: 2.2rem auto 0; background: var(--black2); border: 1px solid #2c2c2c; border-left: 3px solid var(--crimson-bright); padding: 1.3rem 1.7rem; font-size: 0.9rem; color: #c4c4c4; line-height: 1.7; text-align: left; font-weight: 300; }
+.contact-note strong { color: #fff; font-weight: 600; }
+
+.cta-banner { background: var(--black); color: #fff; padding: 3.5rem 1.5rem; text-align: center; border-top: 3px solid var(--crimson); border-bottom: 3px solid var(--crimson); }
+.cta-banner h2 { font-family: var(--serif); font-size: 1.9rem; font-weight: 500; margin-bottom: 0.6rem; }
+.cta-banner p { color: #a8a8a8; margin-bottom: 1.6rem; font-size: 0.95rem; font-weight: 300; }
+
+footer { background: #090909; color: #777; padding: 3rem 1.5rem 2rem; border-top: 1px solid #1e1e1e; }
+.footer-inner { max-width: 1140px; margin: 0 auto; }
+.footer-top { display: flex; justify-content: space-between; gap: 2rem; flex-wrap: wrap; padding-bottom: 2rem; border-bottom: 1px solid #1c1c1c; margin-bottom: 1.5rem; }
+.footer-brand { max-width: 300px; }
+.footer-brand img { height: 50px; width: auto; display: block; margin-bottom: 1rem; }
+.footer-brand p { font-size: 0.8rem; line-height: 1.7; font-weight: 300; }
+.footer-col h5 { color: #fff; font-size: 0.68rem; font-weight: 600; text-transform: uppercase; letter-spacing: 2.5px; margin-bottom: 0.9rem; }
+.footer-col a, .footer-col span { display: block; color: #888; font-size: 0.82rem; padding: 0.22rem 0; text-decoration: none; cursor: pointer; transition: color 0.2s; font-weight: 300; }
+.footer-col a:hover { color: var(--crimson-bright); }
+.footer-bottom { font-size: 0.73rem; line-height: 1.8; text-align: center; font-weight: 300; }
+
+.page-header { background: var(--black); color: #fff; padding: 3rem 1.5rem; border-bottom: 3px solid var(--crimson); }
+.page-header-inner { max-width: 1140px; margin: 0 auto; }
+.page-header h1 { font-family: var(--serif); font-size: 2.2rem; font-weight: 500; }
+.page-header .breadcrumb { font-size: 0.75rem; color: #888; margin-bottom: 0.5rem; }
+.page-header .breadcrumb span { color: var(--crimson-bright); }
+
+@media (max-width: 880px) {
+  .nav-toggle { display: flex; }
+  .nav-links { display: none; position: absolute; top: 100%; left: 0; right: 0; background: var(--black); flex-direction: column; align-items: stretch; border-bottom: 3px solid var(--crimson); z-index: 200; }
+  .nav-links.open { display: flex; }
+  .nav-links button { padding: 1rem 1.5rem; text-align: left; font-size: 13px; border-bottom: 1px solid #1c1c1c; }
+  .nav-links button::after { display: none; }
+  .hero { flex-direction: column; min-height: auto; }
+  .hero-right { flex: none; height: 290px; order: -1; }
+  .hero-right::before { display: none; }
+  .hero-left { flex: none; padding: 2.2rem 1.4rem; }
+  .hero h1 { font-size: 2.1rem; }
+  .hero-btns { flex-direction: column; }
+  .hero-btns button { width: 100%; }
+  .stat-strip-inner { gap: 1rem; }
+  .stat-value { font-size: 1.4rem; }
+  .about-grid { grid-template-columns: 1fr; gap: 2rem; }
+  .about-photo { max-width: 280px; margin: 0 auto; }
+  .results-grid { grid-template-columns: 1fr; }
+  .contact-cards { grid-template-columns: 1fr 1fr; }
+  .pa-grid { grid-template-columns: 1fr; }
+  .pa-grid-home { grid-template-columns: repeat(2, 1fr); }
+  .why-grid { grid-template-columns: 1fr; }
+  section { padding: 3rem 1.25rem; }
+  .section-title { font-size: 1.6rem; }
+  .footer-top { flex-direction: column; }
+}
+@media (max-width: 520px) {
+  .pa-grid-home { grid-template-columns: 1fr; }
+  .contact-cards { grid-template-columns: 1fr; }
+  .hero h1 { font-size: 1.8rem; }
+}
 </style>
 </head>
 <body>
 
-<div id="pw">
-  <div class="pw-card">
-    <div class="pw-logo">⚖</div>
-    <h1>Flaws Case Manager</h1>
-    <p>Altman Nussbaum Shunnarah</p>
-    <input id="pw-in" type="password" placeholder="Password">
-    <div id="pw-err">Incorrect password — try again</div>
-    <button onclick="checkPw()">Sign In</button>
+<nav>
+  <div class="nav-inner">
+    <div class="nav-logo" onclick="showPage('home')">
+      <img class="logo-img" src="logo-nav.svg" alt="Flaws Legal">
+      <div class="nav-name-block">
+        <span class="nav-name">Thomas E. Flaws, Esq.</span>
+        <span class="nav-sub">Personal Injury Attorney</span>
+      </div>
+    </div>
+    <button class="nav-toggle" onclick="toggleNav()" aria-label="Menu"><span></span><span></span><span></span></button>
+    <div class="nav-links" id="navLinks">
+      <button onclick="showPage('home')" id="nav-home">Home</button>
+      <button onclick="showPage('about')" id="nav-about">About</button>
+      <button onclick="showPage('practice')" id="nav-practice">Practice Areas</button>
+      <button onclick="showPage('results')" id="nav-results">Results</button>
+      <button onclick="showPage('faq')" id="nav-faq">FAQ</button>
+      <button onclick="showPage('whattodo')" id="nav-whattodo">After an Injury</button>
+      <button onclick="showPage('contact')" id="nav-contact">Contact</button>
+    </div>
+  </div>
+</nav>
+
+<!-- HOME -->
+<div class="page" id="page-home">
+  <div class="hero">
+    <div class="hero-left">
+      <div class="hero-text">
+        <div class="hero-eyebrow">Over $50 Million Recovered for Injured Clients</div>
+        <div class="hero-rule"></div>
+        <h1>One Focus.<br><em>Serious Injury Cases.</em></h1>
+        <div class="hero-btns">
+          <button class="btn-primary" onclick="showPage('contact')">Free Consultation</button>
+          <button class="btn-outline" onclick="showPage('results')">Our Results</button>
+        </div>
+      </div>
+    </div>
+    <div class="hero-right">
+      <img src="hero-photo.jpg" alt="Thomas E. Flaws, Personal Injury Attorney">
+    </div>
+  </div>
+
+  <div class="stat-strip">
+    <div class="stat-strip-inner">
+      <div class="stat-item"><span class="stat-value">$50M+</span><span class="stat-label">Recovered for Clients</span></div>
+      <div class="stat-item"><span class="stat-value">20+</span><span class="stat-label">Years of Practice</span></div>
+      <div class="stat-item"><span class="stat-value">No Fee</span><span class="stat-label">Unless We Recover</span></div>
+    </div>
+  </div>
+
+  <section><div class="section-inner reveal">
+    <div class="section-label">Why Choose Tom Flaws</div>
+    <div class="section-title">Experience You Can Trust.</div>
+    <div class="section-divider"></div>
+    <div class="why-grid">
+      <div class="why-card"><h3>No Fee Unless We Recover</h3><p>You pay nothing unless we recover compensation for you. Our contingency fee model means we're fully invested in your outcome.</p></div>
+      <div class="why-card"><h3>Personal Attention</h3><p>You'll work directly with Tom &mdash; not passed off to paralegals. Your case gets the care and attention it deserves.</p></div>
+      <div class="why-card"><h3>Proven Results</h3><p>Millions recovered for injured clients across Massachusetts. Tom has the experience to negotiate firmly and litigate fearlessly.</p></div>
+      <div class="why-card"><h3>Free Consultation</h3><p>Your first meeting costs nothing. Tom will review your case, answer your questions, and tell you honestly what he can do for you.</p></div>
+    </div>
+  </div></section>
+
+  <div class="cta-banner">
+    <h2>Injured? Tom Is Ready to Help.</h2>
+    <p>Reach out today for a free, no-obligation consultation. Tom serves clients throughout Massachusetts.</p>
+    <button class="btn-primary" onclick="showPage('contact')">Get in Touch &rarr;</button>
+  </div>
+
+  <section class="warm"><div class="section-inner reveal">
+    <div class="section-label">Practice Areas</div>
+    <div class="section-title">What Tom Handles.</div>
+    <div class="section-divider"></div>
+    <div class="pa-grid-home">
+      <div class="pa-card-home" onclick="togglePA(this)"><div class="pa-card-top"><div class="pa-icon-sm">&#x1F697;</div><h3>Motor Vehicle Accidents</h3><span class="pa-arrow">&#9660;</span></div><div class="pa-detail">Car accidents, truck accidents, motorcycle crashes, pedestrian knockdowns, and bicycle accidents. Insurance companies move fast after a crash to protect their interests &mdash; Tom moves faster. He handles all communications with insurers, investigates liability, and fights to recover full compensation for your injuries, lost wages, and pain and suffering.</div></div>
+      <div class="pa-card-home" onclick="togglePA(this)"><div class="pa-card-top"><div class="pa-icon-sm">&#x1F69B;</div><h3>Trucking Accidents</h3><span class="pa-arrow">&#9660;</span></div><div class="pa-detail">Commercial truck crashes involve federal regulations, complex insurance structures, and well-funded corporate defendants. Tom has the experience to take on trucking companies and their insurers, investigate black box data and driver logs, and hold every responsible party accountable.</div></div>
+      <div class="pa-card-home" onclick="togglePA(this)"><div class="pa-card-top"><div class="pa-icon-sm">&#x1F3D7;&#xFE0F;</div><h3>Construction Accidents</h3><span class="pa-arrow">&#9660;</span></div><div class="pa-detail">Falls from scaffolding, equipment malfunctions, struck-by incidents, and unsafe worksites cause some of the most devastating injuries. Tom understands OSHA standards and Massachusetts labor laws, and knows how to identify every responsible party &mdash; general contractors, subcontractors, property owners, and equipment manufacturers.</div></div>
+      <div class="pa-card-home" onclick="togglePA(this)"><div class="pa-card-top"><div class="pa-icon-sm">&#x1F3E2;</div><h3>Premises Liability</h3><span class="pa-arrow">&#9660;</span></div><div class="pa-detail">Property owners and managers have a legal duty to maintain safe conditions. When they fail &mdash; through broken stairs, inadequate lighting, wet floors, or code violations &mdash; and someone is hurt, Tom holds them accountable. He has recovered millions for clients injured on commercial, residential, and public properties throughout Massachusetts.</div></div>
+      <div class="pa-card-home" onclick="togglePA(this)"><div class="pa-card-top"><div class="pa-icon-sm">&#x2699;&#xFE0F;</div><h3>Product Liability</h3><span class="pa-arrow">&#9660;</span></div><div class="pa-detail">When a defective product causes injury &mdash; whether it's faulty equipment, a dangerous drug, or a poorly designed consumer product &mdash; the manufacturer, distributor, and seller may all be liable. Tom works with engineering and industry experts to build product liability cases against even the largest corporations.</div></div>
+      <div class="pa-card-home" onclick="togglePA(this)"><div class="pa-card-top"><div class="pa-icon-sm">&#x1F512;</div><h3>Negligent Security</h3><span class="pa-arrow">&#9660;</span></div><div class="pa-detail">If you were assaulted, attacked, or injured on someone else's property because they failed to provide adequate security &mdash; proper lighting, security personnel, working locks, or surveillance &mdash; the property owner may be liable. Tom has recovered significant verdicts and settlements in negligent security cases throughout Massachusetts.</div></div>
+      <div class="pa-card-home" onclick="togglePA(this)"><div class="pa-card-top"><div class="pa-icon-sm">&#x1F9E1;</div><h3>Sexual Assault Survivors</h3><span class="pa-arrow">&#9660;</span></div><div class="pa-detail">Survivors of sexual assault may have civil claims against not only the perpetrator, but against institutions, employers, property owners, and others whose negligence allowed the assault to occur. Tom handles these cases with the utmost discretion and sensitivity. These conversations are completely confidential.</div></div>
+      <div class="pa-card-home" onclick="togglePA(this)"><div class="pa-card-top"><div class="pa-icon-sm">&#x1F698;</div><h3>Rideshare Accidents</h3><span class="pa-arrow">&#9660;</span></div><div class="pa-detail">Uber, Lyft, and other rideshare companies carry substantial insurance coverage, but navigating their claims process is complicated by design. Whether you were a passenger, a pedestrian, or another driver, Tom knows how to cut through the complexity, identify all available coverage, and recover full compensation for your injuries.</div></div>
+      <div class="pa-card-home" onclick="togglePA(this)"><div class="pa-card-top"><div class="pa-icon-sm">&#x1F6B6;</div><h3>Pedestrian Accidents</h3><span class="pa-arrow">&#9660;</span></div><div class="pa-detail">Pedestrians struck by vehicles suffer some of the most catastrophic injuries. Tom pursues full accountability against negligent drivers, municipalities that fail to maintain safe crosswalks, and any other responsible party.</div></div>
+      <div class="pa-card-home" onclick="togglePA(this)"><div class="pa-card-top"><div class="pa-icon-sm">&#x2696;&#xFE0F;</div><h3>Insurance Bad Faith</h3><span class="pa-arrow">&#9660;</span></div><div class="pa-detail">Under M.G.L. c. 93A and c. 176D, Massachusetts insurance companies must investigate claims promptly and make fair settlement offers when liability is clear. When they stonewall, lowball, or unreasonably delay, they may owe double or triple the actual damages plus attorney's fees.</div></div>
+      <div class="pa-card-home" onclick="togglePA(this)"><div class="pa-card-top"><div class="pa-icon-sm">&#x1F397;&#xFE0F;</div><h3>Wrongful Death</h3><span class="pa-arrow">&#9660;</span></div><div class="pa-detail">When someone dies as a result of another's negligence, their family may have a wrongful death claim. These cases are among the most difficult Tom handles &mdash; not only legally complex, but deeply personal. He approaches them with the care and gravity they deserve.</div></div>
+    </div>
+  </div></section>
+</div>
+
+<!-- ABOUT -->
+<div class="page" id="page-about">
+  <div class="page-header"><div class="page-header-inner"><div class="breadcrumb">Home &rsaquo; <span>About</span></div><h1>Thomas E. Flaws, Esq.</h1></div></div>
+  <section><div class="section-inner"><div class="about-grid">
+    <div class="about-sidebar">
+      <div class="about-photo"><img src="headshot.jpg" alt="Thomas E. Flaws"></div>
+      <div class="sidebar-box"><h4>Bar Admissions</h4><ul><li>Massachusetts (2004)</li><li>U.S. District Court, D. Mass. (2006)</li><li>New Hampshire (2018)</li><li>U.S. District Court, D.N.H. (2018)</li></ul></div>
+      <div class="sidebar-box"><h4>Education</h4><ul><li>New England School of Law (2004)</li><li>Nazareth University (2001)</li></ul></div>
+      <div class="sidebar-box"><h4>Media Appearances</h4><div class="media-grid">
+        <a class="media-badge" href="https://www.nbcboston.com/news/local/bouncer-charged-in-stabbing-death-of-marine-outside-boston-bar-to-appear-in-court/2705905/" target="_blank" rel="noopener">NBC Boston</a>
+        <a class="media-badge" href="https://www.cbsnews.com/boston/news/forest-hills-glenn-inghram-boston-bus/" target="_blank" rel="noopener">WBZ CBS</a>
+        <a class="media-badge" href="https://www.wcvb.com/article/sons-of-boston-bar-boston-licensing-board-hearing-april-5-2022/39641155" target="_blank" rel="noopener">WCVB ABC</a>
+        <a class="media-badge" href="https://www.boston25news.com/news/local/woman-injured-by-defunct-utility-box-that-fell-subway-station-suing-mbta/PPZZNUFY3NGOBCYV2CMST6M7LU/" target="_blank" rel="noopener">Boston 25</a>
+        <a class="media-badge" href="https://chicago.suntimes.com/crime/2024/04/25/chicago-area-marine-stabbed-slain-boston-daniel-martinez-alvaro-larrama-nation-military-crime" target="_blank" rel="noopener">WGN / Sun-Times</a>
+        <a class="media-badge" href="https://www.wbur.org/news/2023/05/10/injured-t-passenger-harvard-lawsuit" target="_blank" rel="noopener">NPR / WBUR</a>
+        <a class="media-badge" href="https://www.bostonglobe.com/2024/03/14/metro/court-backlog-covid-judges/" target="_blank" rel="noopener">Boston Globe</a>
+        <a class="media-badge" href="https://masslawyersweekly.com/2025/12/16/homeowners-insurance-dog-bite-coverage-ruling/" target="_blank" rel="noopener">MA Lawyers Weekly</a>
+      </div></div>
+      <div class="sidebar-box"><h4>Recognition</h4>
+        <div class="award-item"><span class="award-year">2021&ndash;Present</span><span class="award-text">Super Lawyer &mdash; Boston Magazine / Law &amp; Politics</span></div>
+        <div class="award-item" style="border:none;"><span class="award-year">2013&ndash;2018</span><span class="award-text">Super Lawyers Rising Star &mdash; Boston Magazine / Law &amp; Politics</span></div>
+      </div>
+    </div>
+    <div class="about-text">
+      <div class="section-label">Personal Injury Attorney</div>
+      <div class="section-title">A Career Built on Fighting for the Injured.</div>
+      <div class="section-divider"></div>
+      <p class="lead">Since his admission to the Massachusetts and New Hampshire bars, Tom Flaws has focused his entire career on representing seriously injured people.</p>
+      <p>Tom has fought tirelessly against America's largest corporations, insurance companies, and law firms to achieve outstanding results for his clients. Today, his sole focus is on high-stakes, high-value cases &mdash; including car crashes, trucking wrecks, construction site accidents, product liability, premises liability, and negligent security cases.</p>
+      <p>In 2021, Tom joined Altman Nussbaum Shunnarah, and since that time has resolved some of the largest personal injury cases in Massachusetts history.</p>
+      <div class="about-section-head">Notable Results</div>
+      <div class="award-item"><span class="award-year">$5,500,000</span><span class="award-text">Premises liability &mdash; fall on stairs</span></div>
+      <div class="award-item"><span class="award-year">$5,436,346</span><span class="award-text">Judgment &mdash; premises liability / bad faith</span></div>
+      <div class="award-item"><span class="award-year">$5,250,000</span><span class="award-text">Motor vehicle / pedestrian collision</span></div>
+      <div class="award-item"><span class="award-year">$2,910,000</span><span class="award-text">Construction site accident</span></div>
+      <div class="award-item"><span class="award-year">$2,300,000</span><span class="award-text">Fall on ice</span></div>
+      <div class="award-item"><span class="award-year">$1,100,000</span><span class="award-text">Motorcycle crash</span></div>
+      <div class="award-item"><span class="award-year">$1,000,000</span><span class="award-text">Negligent security</span></div>
+      <div class="award-item"><span class="award-year">$1,000,000</span><span class="award-text">Premises liability</span></div>
+      <div class="award-item" style="border:none;"><span class="award-year">$875,000</span><span class="award-text">Motor vehicle accident</span></div>
+      <div class="about-section-head">Geographic Reach</div>
+      <p>Tom is based in Greater Boston and handles cases throughout Massachusetts, New Hampshire, and New England. He has been admitted <em>pro hac vice</em> &mdash; a court procedure that allows an out-of-state attorney to appear in a jurisdiction where he is not licensed &mdash; in other states, and continues to do so for the right cases. Tom selectively handles catastrophic injury matters around the country.</p>
+      <div class="about-section-head">Attorney Referrals Welcome</div>
+      <p>Tom and Altman Nussbaum Shunnarah welcome referrals from other attorneys. The firm has the resources of a large national practice, and frequently joins forces with smaller firms on catastrophic and complex cases &mdash; bringing investigative depth, expert networks, and litigation firepower that benefit clients and co-counsel alike. If you have a serious case and want to discuss whether it's a fit, Tom welcomes that call.</p>
+      <div class="about-section-head">Media &amp; Community</div>
+      <p>Tom is frequently sought out by media outlets for commentary on legal matters and high-profile cases. He has appeared on NBC Boston, WBZ (CBS Boston), WCVB-TV (ABC Boston), Boston 25 (Fox), WGN Chicago, NPR/WBUR, the Boston Globe, and in Massachusetts Lawyers Weekly.</p>
+      <p>Tom is also deeply committed to the legal community. He has served as a Director-at-Large at the Massachusetts Bar Association Young Lawyers Division and as a Student Mentor at New England School of Law.</p>
+      <div style="margin-top:2rem;"><button class="btn-primary" onclick="showPage('contact')">Schedule a Free Consultation</button></div>
+    </div>
+  </div></div></section>
+</div>
+
+<!-- PRACTICE AREAS -->
+<div class="page" id="page-practice">
+  <div class="page-header"><div class="page-header-inner"><div class="breadcrumb">Home &rsaquo; <span>Practice Areas</span></div><h1>What Tom Handles</h1></div></div>
+  <section><div class="section-inner"><div class="pa-grid">
+    <div class="pa-card"><div class="pa-icon">&#x1F697;</div><h3>Motor Vehicle Accidents</h3><p>Car accidents, truck accidents, motorcycle crashes, pedestrian knockdowns, and bicycle accidents. Tom handles the insurance companies so you can focus on healing.</p></div>
+    <div class="pa-card"><div class="pa-icon">&#x1F69B;</div><h3>Trucking Accidents</h3><p>Commercial truck crashes involve complex federal regulations and powerful corporate defendants. Tom has the experience to go up against trucking companies and win.</p></div>
+    <div class="pa-card"><div class="pa-icon">&#x1F3D7;&#xFE0F;</div><h3>Construction Accidents</h3><p>Falls from scaffolding, equipment malfunctions, struck-by incidents, and unsafe worksites. Tom understands OSHA standards and knows how to prove negligence.</p></div>
+    <div class="pa-card"><div class="pa-icon">&#x1F3E2;</div><h3>Premises Liability</h3><p>Slip and falls, stairway accidents, and unsafe property conditions. Property owners have a duty &mdash; Tom enforces it.</p></div>
+    <div class="pa-card"><div class="pa-icon">&#x2699;&#xFE0F;</div><h3>Product Liability</h3><p>Defective products, dangerous equipment, and manufacturing failures. Tom holds manufacturers responsible for the harm their products cause.</p></div>
+    <div class="pa-card"><div class="pa-icon">&#x1F512;</div><h3>Negligent Security</h3><p>Assaults that occur because a property owner failed to provide adequate security. You deserve to be safe &mdash; and compensation when that safety is ignored.</p></div>
+    <div class="pa-card"><div class="pa-icon">&#x1F9E1;</div><h3>Sexual Assault Survivors</h3><p>Survivors of sexual assault may have civil claims against the perpetrator, institutions, employers, and property owners whose negligence enabled the assault. Tom handles these cases with complete discretion and sensitivity.</p></div>
+    <div class="pa-card"><div class="pa-icon">&#x1F698;</div><h3>Rideshare Accidents</h3><p>Uber, Lyft, and other rideshare companies carry substantial insurance, but their claims process is complicated by design. Tom knows how to navigate it and recover full compensation.</p></div>
+    <div class="pa-card"><div class="pa-icon">&#x1F6B6;</div><h3>Pedestrian Accidents</h3><p>Crosswalk and sidewalk injuries caused by negligent drivers or poorly maintained public ways. Tom pursues full accountability on your behalf.</p></div>
+    <div class="pa-card"><div class="pa-icon">&#x2696;&#xFE0F;</div><h3>Insurance Bad Faith / Consumer Protection</h3><p>Under M.G.L. c. 93A and c. 176D, insurance companies must investigate claims promptly and make fair settlement offers. When they don't, they may be liable for double or triple damages plus attorney's fees.</p></div>
+    <div class="pa-card"><div class="pa-icon">&#x1F397;&#xFE0F;</div><h3>Wrongful Death</h3><p>When negligence takes a life, surviving family members may have a wrongful death claim. Tom handles these cases with the seriousness and compassion they deserve.</p></div>
+  </div></div></section>
+  <div class="cta-banner"><h2>Not Sure If You Have a Case?</h2><p>Call or message Tom. There's no cost and no obligation &mdash; just honest advice.</p><button class="btn-primary" onclick="showPage('contact')">Contact Tom &rarr;</button></div>
+</div>
+
+<!-- RESULTS -->
+<div class="page" id="page-results">
+  <div class="page-header"><div class="page-header-inner"><div class="breadcrumb">Home &rsaquo; <span>Case Results</span></div><h1>Case Results</h1></div></div>
+  <section><div class="section-inner">
+    <div class="section-label">Track Record</div>
+    <div class="section-title">Millions Recovered for His Clients.</div>
+    <div class="section-divider"></div>
+    <p style="font-size:0.88rem;color:#777;margin-bottom:1.6rem;font-weight:300;">Tap any result to read more about the case.</p>
+    <div class="results-grid">
+      <div class="result-card" onclick="toggleResult(this)">
+        <div class="result-card-header"><span class="result-amount">$5,500,000</span><span class="result-type">Premises Liability</span><span class="result-desc">Fall on stairs at rental home</span><span class="result-toggle">Read more &#9660;</span></div>
+        <div class="result-detail"><p>A woman visiting her daughter in Massachusetts entered a rented home through a side door that swung inward &mdash; the opposite of what the original building permit required. Carrying her granddaughter's bicycle, she had to reach back to close the door and fell down the stairway. She was rendered quadriplegic. Tom demonstrated that the property had been altered without a permit and no longer complied with Massachusetts building and sanitary codes. The case resolved for the full amount of available insurance.</p><p class="detail-meta">Settled March 2023 &middot; Reported in Massachusetts Lawyers Weekly</p></div>
+      </div>
+      <div class="result-card" onclick="toggleResult(this)">
+        <div class="result-card-header"><span class="result-amount">$5,436,346</span><span class="result-type">Negligent Security / Bad Faith</span><span class="result-desc">Patron assaulted outside bar, broken neck</span><span class="result-toggle">Read more &#9660;</span></div>
+        <div class="result-detail"><p>A 68-year-old man was in Boston celebrating his daughter's engagement when he was attacked outside a bar. The assailant grabbed him by his hood and pulled him to the ground, causing a broken neck requiring fusion. The defendant's homeowner's insurer denied coverage. Tom took an assignment of rights from the defendant, obtained a default judgment in Suffolk Superior Court, then pursued the insurer directly under M.G.L. c. 93A and c. 176D for bad faith. The case settled at mediation for the exact amount of the judgment plus interest.</p><p class="detail-meta">Settled May 2025 &middot; Reported in Massachusetts Lawyers Weekly</p></div>
+      </div>
+      <div class="result-card" onclick="toggleResult(this)">
+        <div class="result-card-header"><span class="result-amount">$5,250,000</span><span class="result-type">Motor Vehicle</span><span class="result-desc">College student's leg amputated</span><span class="result-toggle">Read more &#9660;</span></div>
+        <div class="result-detail"><p>A 20-year-old college student was helping his family on a landscaping job in Belmont when a sun-blinded driver came up from behind, cut the wheel left, and pinned him against the landscape truck. He suffered a traumatic amputation of his left leg between the knee and hip. Despite the catastrophic injury, the young man planned to return to college. The case resolved at mediation.</p><p class="detail-meta">Settled May 2023 &middot; Reported in Massachusetts Lawyers Weekly</p></div>
+      </div>
+      <div class="result-card"><div class="result-card-header"><span class="result-amount">$2,910,000</span><span class="result-type">Construction Accident</span><span class="result-desc">Construction site accident</span></div></div>
+      <div class="result-card"><div class="result-card-header"><span class="result-amount">$2,300,000</span><span class="result-type">Slip &amp; Fall</span><span class="result-desc">Fall on ice</span></div></div>
+      <div class="result-card"><div class="result-card-header"><span class="result-amount">$1,100,000</span><span class="result-type">Motor Vehicle</span><span class="result-desc">Motorcycle crash</span></div></div>
+      <div class="result-card"><div class="result-card-header"><span class="result-amount">$1,000,000</span><span class="result-type">Negligent Security</span><span class="result-desc">Negligent security</span></div></div>
+      <div class="result-card"><div class="result-card-header"><span class="result-amount">$1,000,000</span><span class="result-type">Premises Liability</span><span class="result-desc">Premises liability</span></div></div>
+      <div class="result-card"><div class="result-card-header"><span class="result-amount">$875,000</span><span class="result-type">Motor Vehicle</span><span class="result-desc">Motor vehicle accident</span></div></div>
+    </div>
+    <p class="results-disclaimer">Past results do not guarantee future outcomes. Each case is unique and results depend on the specific facts and circumstances involved. Attorney advertising.</p>
+  </div></section>
+</div>
+
+<!-- FAQ -->
+<div class="page" id="page-faq">
+  <div class="page-header"><div class="page-header-inner"><div class="breadcrumb">Home &rsaquo; <span>FAQ</span></div><h1>Frequently Asked Questions</h1></div></div>
+  <section><div class="section-inner" style="max-width:820px;">
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">How much does it cost to hire Tom? <span class="faq-toggle">+</span></div><div class="faq-a">Nothing upfront. Tom handles personal injury cases on a contingency fee basis, which means he only gets paid if he recovers for you. His fee is a percentage of the recovery &mdash; if there's no recovery, you owe nothing.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">How long does a personal injury case take? <span class="faq-toggle">+</span></div><div class="faq-a">It varies significantly. Some cases settle within a few months; others take a year or more, particularly if litigation is required. Tom always prioritizes getting you a fair result over rushing to a lowball settlement.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">What is the statute of limitations in Massachusetts? <span class="faq-toggle">+</span></div><div class="faq-a">In most personal injury cases in Massachusetts, you have three years from the date of the injury to file a lawsuit. There are exceptions &mdash; for minors, medical malpractice, and government entities, different rules may apply. Don't wait &mdash; contact Tom as soon as possible.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">What if the accident was partly my fault? <span class="faq-toggle">+</span></div><div class="faq-a">Massachusetts follows a modified comparative negligence rule. As long as you are less than 51% at fault, you can still recover damages &mdash; though your recovery will be reduced by your percentage of fault. Tom will work to minimize any finding of fault against you.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">What kinds of compensation can I recover? <span class="faq-toggle">+</span></div><div class="faq-a">Depending on your case, you may be able to recover medical expenses (past and future), lost wages, loss of earning capacity, pain and suffering, emotional distress, and loss of enjoyment of life. In some cases, punitive damages may be available.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Should I talk to the other party's insurance company? <span class="faq-toggle">+</span></div><div class="faq-a">No &mdash; not before speaking with Tom. Insurance adjusters are trained to minimize what they pay out. Anything you say can be used against your claim. Contact Tom first and let him handle all communications on your behalf.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">What should I do right after an accident? <span class="faq-toggle">+</span></div><div class="faq-a">Seek medical attention &mdash; even if you feel okay. Document everything: take photos, get witness information, file a police report if applicable, and avoid posting about the incident on social media. Then call Tom. Early action protects your health and your claim.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">What is insurance bad faith, and do I have a claim? <span class="faq-toggle">+</span></div><div class="faq-a">Under M.G.L. c. 93A and c. 176D, insurance companies in Massachusetts have a legal duty to investigate claims promptly, communicate honestly, and make reasonable settlement offers when liability is reasonably clear. When an insurer violates these obligations, it may be liable for double or triple the actual damages, plus attorney's fees. Contact Tom to discuss whether you have a bad faith claim.</div></div>
+  </div></section>
+</div>
+
+<!-- AFTER AN INJURY -->
+<div class="page" id="page-whattodo">
+  <div class="page-header"><div class="page-header-inner"><div class="breadcrumb">Home &rsaquo; <span>After an Injury</span></div><h1>What To Do After an Injury</h1></div></div>
+  <section><div class="section-inner" style="max-width:880px;">
+    <p style="font-size:1rem;color:#3d3d3d;margin-bottom:2.2rem;line-height:1.85;font-weight:300;">Being seriously injured is one of the most disorienting experiences a person can go through. In the days that follow, it can be hard to know what to do, who to trust, or even where to begin. The most important thing to understand is this: <strong style="font-weight:600;">you don't have to figure it all out at once.</strong> Focus on your health. Tom will handle the rest.</p>
+    <div class="whattodo-steps">
+      <div class="whattodo-step"><div class="step-number">1</div><div class="step-content"><h3>Get a Medical Opinion</h3><p>Whatever happened, getting checked out by a doctor is the right thing to do &mdash; for your health, and for your peace of mind. Many serious injuries, including spinal injuries, traumatic brain injuries, and internal damage, don't announce themselves right away. Symptoms can appear days later. A prompt medical evaluation tells you what you're dealing with and makes sure nothing serious goes unaddressed.</p></div></div>
+      <div class="whattodo-step"><div class="step-number">2</div><div class="step-content"><h3>Preserve What You Can</h3><p>If you are able, take photographs of the scene, any hazardous conditions, and your injuries. Get the names and contact information of anyone who witnessed what happened. If law enforcement responds, make sure a report is filed. Write down what you remember while the details are still clear &mdash; memory is surprisingly unreliable, and the small things often matter more than you'd expect.</p></div></div>
+      <div class="whattodo-step"><div class="step-number">3</div><div class="step-content"><h3>Be Careful About Who You Talk To</h3><p>It's natural to want to explain yourself or be cooperative in the aftermath of an injury. But insurance adjusters &mdash; even friendly ones &mdash; are professionals whose job is to resolve claims for as little as possible. If someone from an insurance company asks for a recorded statement, it's worth talking to a lawyer first. You're not required to give one, and a brief conversation with Tom costs you nothing.</p></div></div>
+      <div class="whattodo-step"><div class="step-number">4</div><div class="step-content"><h3>Reach Out Early &mdash; It Makes a Real Difference</h3><p>The earlier Tom gets involved, the better he can protect your interests. Evidence gets lost. Surveillance footage is overwritten. Witnesses move on. When Tom is engaged early, he can investigate while the facts are fresh &mdash; identifying every responsible party, securing critical evidence, and building the strongest possible foundation for your case.</p><p>Just as importantly, early involvement means you can put the legal side of this entirely out of your mind. Tom handles the insurance companies, the paperwork, and the investigation. Your only job is getting better.</p></div></div>
+      <div class="whattodo-step"><div class="step-number">5</div><div class="step-content"><h3>Think Twice Before Posting</h3><p>Social media is a normal part of life, but it's worth being thoughtful in the period following a serious injury. Posts about your activities, your health, or the incident itself can be taken out of context in ways that are genuinely harmful to your case. When in doubt, it's better to wait.</p></div></div>
+      <div class="whattodo-step"><div class="step-number">6</div><div class="step-content"><h3>Keep Track of How This Is Affecting Your Life</h3><p>Hold onto your medical bills, records, and any out-of-pocket expenses. If you're missing work, keep a record of it. Consider keeping a simple journal about how you're feeling day to day &mdash; your pain levels, what you can't do, how your life has changed. These details matter, and they're easy to forget over time.</p></div></div>
+    </div>
+    <div style="background:var(--warm);border:1px solid var(--line);border-left:3px solid var(--crimson);padding:1.5rem 2rem;margin-top:3rem;">
+      <p style="font-size:0.93rem;color:#3d3d3d;margin:0;font-weight:300;line-height:1.75;"><strong style="font-weight:600;">A note on timing:</strong> There is never any cost to speaking with Tom &mdash; consultations are always free, and there is no fee unless he recovers for you. If you're unsure whether you even have a case, that's exactly the kind of conversation he's glad to have.</p>
+    </div>
+    <div style="margin-top:2rem;"><button class="btn-primary" onclick="showPage('contact')">Speak with Tom &rarr;</button></div>
+  </div></section>
+</div>
+
+<!-- CONTACT -->
+<div class="page" id="page-contact">
+  <div class="contact-hero">
+    <h1>Let's Talk About Your Case</h1>
+    <p>Tom offers free, no-obligation consultations. There is no fee unless he recovers for you. Reach out by phone or email &mdash; he'd be glad to hear from you.</p>
+    <div class="contact-cards">
+      <div class="contact-card"><div class="contact-card-icon">&#x260E;&#xFE0F;</div><div class="contact-card-label">Direct Line</div><div class="contact-card-value"><a href="tel:7816752323">(781) 675-2323</a></div></div>
+      <div class="contact-card"><div class="contact-card-icon">&#x2709;&#xFE0F;</div><div class="contact-card-label">Email</div><div class="contact-card-value"><a href="mailto:tflaws@anslawyers.com">tflaws@anslawyers.com</a></div></div>
+      <div class="contact-card"><div class="contact-card-icon">&#x1F4CD;</div><div class="contact-card-label">Office</div><div class="contact-card-value"><a href="https://www.google.com/maps/search/?api=1&query=One+Gateway+Center+300+Washington+St+Suite+200+Newton+MA+02458" target="_blank" rel="noopener">One Gateway Center<br>300 Washington St., Ste. 200<br>Newton, MA 02458</a></div></div>
+      <div class="contact-card"><div class="contact-card-icon">&#x1F3DB;&#xFE0F;</div><div class="contact-card-label">Firm</div><div class="contact-card-value">Altman Nussbaum<br>Shunnarah</div></div>
+    </div>
+    <div class="contact-note"><strong>Ready to get started?</strong> Call Tom directly at (781) 675-2323 or send an email to tflaws@anslawyers.com. He personally responds to every inquiry and will let you know honestly whether he can help.</div>
+    <div class="contact-note" style="margin-top:1rem;"><strong>Office Access:</strong> Parking is available at One Gateway Center. The office is fully accessible to individuals with mobility needs.</div>
   </div>
 </div>
 
-<div id="app" style="display:none">
-  <div id="topbar">
-    <div id="top-l">
-      <div id="app-title">Flaws Case Manager</div>
-      <div id="app-sub">Loading…</div>
+<footer>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <img src="logo-nav.svg" alt="Flaws Legal">
+        <p>Fighting for seriously injured people throughout Massachusetts, New Hampshire, and New England. Over $50 million recovered.</p>
+      </div>
+      <div class="footer-col">
+        <h5>Navigate</h5>
+        <a onclick="showPage('home')">Home</a>
+        <a onclick="showPage('about')">About</a>
+        <a onclick="showPage('practice')">Practice Areas</a>
+        <a onclick="showPage('results')">Results</a>
+      </div>
+      <div class="footer-col">
+        <h5>Resources</h5>
+        <a onclick="showPage('faq')">FAQ</a>
+        <a onclick="showPage('whattodo')">After an Injury</a>
+        <a onclick="showPage('contact')">Contact</a>
+      </div>
+      <div class="footer-col">
+        <h5>Office</h5>
+        <span>One Gateway Center</span>
+        <span>300 Washington St., Ste. 200</span>
+        <span>Newton, MA 02458</span>
+        <a href="tel:7816752323">(781) 675-2323</a>
+        <a href="mailto:tflaws@anslawyers.com">tflaws@anslawyers.com</a>
+      </div>
     </div>
-    <div id="top-r">
-      <input id="srch" type="text" placeholder="Search cases…" oninput="onSearch(this.value)">
-      <button class="tbtn" id="add-toggle" onclick="toggleAdd()">+ Add Case</button>
+    <div class="footer-bottom">
+      <p>&copy; 2025 Thomas E. Flaws, Esq. &middot; Altman Nussbaum Shunnarah</p>
+      <p>Attorney Advertising. Prior results do not guarantee a similar outcome.</p>
     </div>
   </div>
-
-  <div id="add-panel">
-    <div>
-      <label>Case name</label>
-      <input id="new-name" type="text" placeholder="e.g. John A Smith v. Acme Corp DOL 1/1/2024">
-    </div>
-    <div>
-      <label>Category</label>
-      <select id="new-cat">
-        <option>Pre-Suit</option>
-        <option>In Suit</option>
-        <option>Settled</option>
-      </select>
-    </div>
-    <button id="add-btn" onclick="doAdd()">Add Case</button>
-    <span class="add-hint">Last name extracted automatically for sorting</span>
-  </div>
-
-  <div id="case-list"></div>
-  <div id="footer">Changes save automatically · Real-time sync enabled · Source: FLAWS Case Count 6/22/2026</div>
-</div>
-
-<div id="toast"></div>
+</footer>
 
 <script>
-const SUPABASE_URL = 'https://hamxiiioxuzgvuzfrqce.supabase.co';
-const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhhbXhpaWlveHV6Z3Z1emZycWNlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk2ODcwODQsImV4cCI6MjA5NTI2MzA4NH0.XEWwxM5H-7TpDiMX-FEhVOEonhd4exFHJ-eNCXzZsqU';
-const APP_PASSWORD = 'ANSFlaws2024';
-
-const CATS     = ['Pre-Suit','In Suit','Settled'];
-const ALL_CATS = ['Pre-Suit','In Suit','Settled','Closed'];
-const CFG = {
-  'Pre-Suit':{ h:'#1F3864', b1:'#DCE6F1', b2:'#F0F5FB' },
-  'In Suit': { h:'#1C4B2D', b1:'#E2EFD9', b2:'#F1F8ED' },
-  'Settled': { h:'#4A4A4A', b1:'#EFEFEF', b2:'#F8F8F8' },
-  'Closed':  { h:'#7A1C1C', b1:'#FCE4D6', b2:'#FEF3EE' },
-};
-
-let sb, cases=[], collapsed={}, searchQ='', localNa={}, naTimers={}, rtPending=false, openCompleted={};
-
-function checkPw(){
-  const v=document.getElementById('pw-in').value;
-  if(v===APP_PASSWORD){
-    sessionStorage.setItem('cm_ok','1');
-    document.getElementById('pw').style.display='none';
-    startApp();
-  } else {
-    document.getElementById('pw-err').style.display='block';
-    document.getElementById('pw-in').value='';
-    document.getElementById('pw-in').focus();
+const PAGES = ['home','about','practice','results','faq','whattodo','contact'];
+function showPage(id, pushState) {
+  if (!PAGES.includes(id)) id = 'home';
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-links button').forEach(b => b.classList.remove('active'));
+  document.getElementById('page-' + id).classList.add('active');
+  document.getElementById('nav-' + id).classList.add('active');
+  document.getElementById('navLinks').classList.remove('open');
+  if (pushState !== false) {
+    const hash = id === 'home' ? '' : '#' + id;
+    try { history.pushState({ page: id }, '', window.location.pathname + hash); } catch(e) { try { window.location.hash = hash; } catch(e2) {} }
   }
+  window.scrollTo(0, 0);
+  requestAnimationFrame(initReveals);
 }
-
-async function startApp(){
-  sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
-  document.getElementById('app').style.display='block';
-  await loadCases();
-  sb.channel('cm_live')
-    .on('postgres_changes',{event:'*',schema:'public',table:'cases'},handleRT)
-    .subscribe();
+function getPageFromHash() {
+  const hash = window.location.hash.replace('#', '');
+  return PAGES.includes(hash) ? hash : 'home';
 }
-
-function handleRT(){
-  const active=document.activeElement;
-  if(active&&(active.classList.contains('na-in')||active.id==='new-name')){
-    rtPending=true;
-    toast('Another user made a change — list will refresh when you finish typing');
-    return;
-  }
-  loadCases();
+window.addEventListener('load', function() { showPage(getPageFromHash(), false); });
+window.addEventListener('popstate', function(e) { showPage(e.state && e.state.page ? e.state.page : getPageFromHash(), false); });
+function toggleNav() { document.getElementById('navLinks').classList.toggle('open'); }
+function toggleFaq(el) { el.parentElement.classList.toggle('open'); }
+function togglePA(card) { card.classList.toggle('open'); }
+function toggleResult(card) {
+  const wasOpen = card.classList.contains('open');
+  document.querySelectorAll('.result-card').forEach(c => c.classList.remove('open'));
+  if (!wasOpen) card.classList.add('open');
 }
-function onInputBlur(){ if(rtPending){ rtPending=false; loadCases(); } }
-
-async function loadCases(){
-  const {data,error}=await sb.from('cases').select('*').order('last_name');
-  if(error){ toast('⚠ Could not load cases: '+error.message); return; }
-  cases=data||[];
-  render();
+let observer;
+function initReveals() {
+  if (typeof IntersectionObserver === 'undefined') { document.querySelectorAll('.reveal').forEach(el => el.classList.add('visible')); return; }
+  if (observer) observer.disconnect();
+  observer = new IntersectionObserver(entries => { entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); }); }, { threshold: 0.08 });
+  document.querySelectorAll('.page.active .reveal').forEach(el => { el.classList.remove('visible'); observer.observe(el); });
 }
-
-async function moveCase(id,category){
-  const {error}=await sb.from('cases').update({category}).eq('id',id);
-  if(error) toast('⚠ Save failed: '+error.message);
-}
-
-function naInput(id,val){
-  localNa[id]=val;
-  clearTimeout(naTimers[id]);
-  naTimers[id]=setTimeout(async()=>{
-    const {error}=await sb.from('cases').update({next_action:val}).eq('id',id);
-    if(error) toast('⚠ Could not save next action');
-    else delete localNa[id];
-  },650);
-}
-
-async function markDone(id){
-  const c=cases.find(x=>x.id===id);
-  if(!c) return;
-  const task=(localNa[id]!==undefined?localNa[id]:(c.next_action||'')).trim();
-  if(!task) return;
-  // Cancel pending debounce
-  if(naTimers[id]){ clearTimeout(naTimers[id]); delete naTimers[id]; }
-  delete localNa[id];
-  let existing=[];
-  try{ existing=JSON.parse(c.completed_tasks||'[]'); }catch(e){}
-  const updated=[...existing,{task,completed_at:new Date().toISOString()}];
-  const {error}=await sb.from('cases').update({
-    next_action:'',
-    completed_tasks:JSON.stringify(updated)
-  }).eq('id',id);
-  if(error) toast('⚠ Could not mark done: '+error.message);
-}
-
-async function deleteCompleted(id,idx){
-  const c=cases.find(x=>x.id===id);
-  if(!c) return;
-  let existing=[];
-  try{ existing=JSON.parse(c.completed_tasks||'[]'); }catch(e){}
-  existing.splice(idx,1);
-  const {error}=await sb.from('cases').update({
-    completed_tasks:JSON.stringify(existing)
-  }).eq('id',id);
-  if(error) toast('⚠ Could not delete task: '+error.message);
-}
-
-function toggleCompleted(id){ openCompleted[id]=!openCompleted[id]; render(); }
-
-function extractLast(name){
-  let s=name.replace(/^(HARVARD\s+MORGUE-?\s*|Estate\s+of\s+)/i,'');
-  const m=s.search(/,|\(|\bv\.\b|\bvs?\.?\b|\||\bDOL\b|\bMVA\b|\bUM\b|\d/i);
-  if(m>-1) s=s.slice(0,m);
-  const toks=s.trim().split(/\s+/).filter(Boolean);
-  if(!toks.length) return name.split(/\s+/).pop()||'';
-  const suf=new Set(['jr','sr','ii','iii','iv','esq']);
-  let last=toks[toks.length-1].replace(/[.,]+$/,'');
-  if(suf.has(last.toLowerCase())&&toks.length>1) last=toks[toks.length-2].replace(/[.,]+$/,'');
-  return last;
-}
-
-async function doAdd(){
-  const name=document.getElementById('new-name').value.trim();
-  const cat=document.getElementById('new-cat').value;
-  if(!name){ document.getElementById('new-name').focus(); return; }
-  const btn=document.getElementById('add-btn');
-  btn.disabled=true; btn.textContent='Adding…';
-  const last_name=extractLast(name);
-  const {error}=await sb.from('cases').insert({
-    name,last_name,category:cat,done:false,next_action:'',completed_tasks:'[]'
-  });
-  btn.disabled=false; btn.textContent='Add Case';
-  if(error){ toast('⚠ Could not add case: '+error.message); return; }
-  document.getElementById('new-name').value='';
-  document.getElementById('new-cat').value='Pre-Suit';
-  toggleAdd();
-}
-
-function toggleAdd(){
-  const p=document.getElementById('add-panel');
-  const btn=document.getElementById('add-toggle');
-  const open=p.style.display==='flex';
-  p.style.display=open?'none':'flex';
-  btn.textContent=open?'+ Add Case':'✕ Cancel';
-  if(!open) document.getElementById('new-name').focus();
-}
-function onSearch(v){ searchQ=v.toLowerCase(); render(); }
-function togSec(cat){ collapsed[cat]=!collapsed[cat]; render(); }
-function esc(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
-function toast(msg){
-  const t=document.getElementById('toast');
-  t.textContent=msg; t.style.display='block';
-  clearTimeout(toast._t);
-  toast._t=setTimeout(()=>t.style.display='none',3800);
-}
-
-function render(){
-  const counts=Object.fromEntries(ALL_CATS.map(cat=>[cat,cases.filter(c=>c.category===cat).length]));
-  document.getElementById('app-sub').innerHTML=
-    CATS.map(cat=>`${cat}: <b>${counts[cat]}</b>`).join('  ·  ')+
-    (counts.Closed?`  ·  ${counts.Closed} closed`:'')+
-    `  ·  <b>${cases.length}</b> total`;
-
-  const sects=[...CATS,...(counts.Closed>0?['Closed']:[])];
-  document.getElementById('case-list').innerHTML=sects.map(cat=>{
-    const cfg=CFG[cat];
-    const coll=collapsed[cat];
-    const shown=cases
-      .filter(c=>c.category===cat&&(!searchQ||c.name.toLowerCase().includes(searchQ)))
-      .sort((a,b)=>(a.last_name||'').localeCompare(b.last_name||''));
-    const tot=counts[cat];
-
-    let h=`<div class="sect">
-<div class="sect-hd" style="background:${cfg.h}" onclick="togSec('${cat}')">
-  <span class="sect-title">${cat}</span>
-  <div style="display:flex;gap:10px;align-items:center;font-size:12px">
-    <span class="badge">${tot} cases${searchQ&&shown.length!==tot?` (${shown.length} shown)`:''}</span>
-    <span>${coll?'▶':'▼'}</span>
-  </div>
-</div>`;
-
-    if(!coll){
-      h+=`<div class="tbl-wrap">
-<div class="row hdr-row" style="background:${cfg.b1}">
-  <div class="c-name">Case name</div>
-  <div class="c-na">Next action</div>
-  <div style="text-align:center;font-size:10px">✓</div>
-  <div class="c-cat">Category</div>
-</div>`;
-
-      if(!shown.length){
-        h+=`<div class="empty">${searchQ?'No matching cases in this category':'No cases in this category'}</div>`;
-      } else {
-        shown.forEach((c,i)=>{
-          const bg=i%2===0?cfg.b2:cfg.b1;
-          const naVal=localNa[c.id]!==undefined?localNa[c.id]:(c.next_action||'');
-          let completedTasks=[];
-          try{ completedTasks=JSON.parse(c.completed_tasks||'[]'); }catch(e){}
-          const hasCompleted=completedTasks.length>0;
-          const isOpen=openCompleted[c.id];
-
-          // Main row
-          h+=`<div class="row" style="background:${bg}">
-  <div class="c-name">${esc(c.name)}</div>
-  <div class="c-na"><input class="na-in" type="text" value="${esc(naVal)}" oninput="naInput('${c.id}',this.value)" onblur="onInputBlur()" placeholder="Next action…"></div>
-  <div style="text-align:center">
-    <button class="done-btn" onclick="markDone('${c.id}')" title="Mark task as done" ${!naVal.trim()?'disabled':''}>✓</button>
-  </div>
-  <div class="c-cat"><select class="cat-sel" onchange="moveCase('${c.id}',this.value)">
-    ${ALL_CATS.map(o=>`<option value="${o}"${o===c.category?' selected':''}>${o}</option>`).join('')}
-  </select></div>
-</div>`;
-
-          // Completed tasks bar
-          if(hasCompleted){
-            h+=`<div class="ct-bar" style="background:${bg}">
-  <button class="ct-toggle" onclick="toggleCompleted('${c.id}')">
-    ✓ ${completedTasks.length} completed task${completedTasks.length>1?'s':''} ${isOpen?'▲':'▼'}
-  </button>`;
-            if(isOpen){
-              h+=`<div class="ct-list">`;
-              completedTasks.forEach((t,idx)=>{
-                const txt=typeof t==='object'?t.task:t;
-                const dt=typeof t==='object'&&t.completed_at
-                  ?new Date(t.completed_at).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}):'';
-                h+=`<div class="ct-item">
-  <span>✓ ${esc(txt)}${dt?` <em>— ${dt}</em>`:''}</span>
-  <button class="ct-del" onclick="deleteCompleted('${c.id}',${idx})" title="Remove from log">✕</button>
-</div>`;
-              });
-              h+=`</div>`;
-            }
-            h+=`</div>`;
-          }
-        });
-      }
-      h+=`</div>`;
-    }
-    h+=`</div>`;
-    return h;
-  }).join('');
-}
-
-window.addEventListener('DOMContentLoaded',()=>{
-  if(sessionStorage.getItem('cm_ok')==='1'){
-    document.getElementById('pw').style.display='none';
-    startApp();
-  } else {
-    document.getElementById('pw-in').focus();
-  }
-  document.getElementById('pw-in').addEventListener('keydown',e=>{ if(e.key==='Enter') checkPw(); });
-  document.getElementById('new-name').addEventListener('keydown',e=>{ if(e.key==='Enter') doAdd(); });
-});
 </script>
 </body>
 </html>
